@@ -238,20 +238,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(contactForm);
 
+            const service = formData.get('service') || '';
+            const notes = (formData.get('notes') || '').trim();
+
             const payload = {
                 firstName: formData.get('firstName') || '',
                 lastName: formData.get('lastName') || '',
                 email: formData.get('email'),
                 phone: formData.get('phone') || '',
                 tags: ['website-lead'],
-                source: 'ScalePlus Website'
+                source: 'ScalePlus Website',
+                customFields: []
             };
 
-            const notes = (formData.get('notes') || '').trim();
+            if (service) {
+                payload.customFields.push({ key: 'service_needed', field_value: service });
+            }
             if (notes) {
-                payload.customFields = [
-                    { key: 'notes', field_value: notes }
-                ];
+                payload.customFields.push({ key: 'notes', field_value: notes });
             }
 
             try {
