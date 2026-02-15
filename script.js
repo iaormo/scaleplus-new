@@ -226,21 +226,62 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', checkReveal, { passive: true });
     checkReveal();
 
-    // --- Contact Form ---
+    // --- Contact Form → GoHighLevel ---
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button[type="submit"]');
             const original = btn.innerHTML;
-            btn.innerHTML = '<span>Message Sent!</span>';
-            btn.style.background = '#22c55e';
+            btn.innerHTML = '<span>Sending...</span>';
             btn.disabled = true;
+
+            const formData = new FormData(contactForm);
+            const fullName = formData.get('name') || '';
+            const nameParts = fullName.trim().split(/\s+/);
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+
+            const payload = {
+                firstName,
+                lastName,
+                email: formData.get('email'),
+                tags: ['website-lead'],
+                source: 'ScalePlus Website',
+                customFields: [
+                    { key: 'service_interest', field_value: formData.get('service') || '' },
+                    { key: 'message', field_value: formData.get('message') || '' }
+                ]
+            };
+
+            try {
+                const res = await fetch('https://services.leadconnectorhq.com/contacts/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer pit-ae349e92-1fa6-4656-ae9d-b015d2ba2de3',
+                        'Content-Type': 'application/json',
+                        'Version': '2021-07-28'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    btn.innerHTML = '<span>Message Sent!</span>';
+                    btn.style.background = '#22c55e';
+                    contactForm.reset();
+                } else {
+                    btn.innerHTML = '<span>Something went wrong</span>';
+                    btn.style.background = '#ef4444';
+                }
+            } catch (err) {
+                btn.innerHTML = '<span>Network error — try again</span>';
+                btn.style.background = '#ef4444';
+            }
+
             setTimeout(() => {
                 btn.innerHTML = original;
                 btn.style.background = '';
                 btn.disabled = false;
-                contactForm.reset();
             }, 3000);
         });
     }
