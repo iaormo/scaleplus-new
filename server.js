@@ -6,6 +6,7 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const GHL_API = 'https://services.leadconnectorhq.com/contacts/';
 const GHL_TOKEN = 'pit-ae349e92-1fa6-4656-ae9d-b015d2ba2de3';
+const GHL_LOCATION_ID = 'GfDBeSbJmjBtcqGK6vXN';
 
 const MIME_TYPES = {
     '.html': 'text/html',
@@ -58,6 +59,7 @@ const server = http.createServer((req, res) => {
         req.on('end', async () => {
             try {
                 const payload = JSON.parse(body);
+                payload.locationId = GHL_LOCATION_ID;
                 const ghlRes = await proxyToGHL(payload);
                 res.writeHead(ghlRes.status, { 'Content-Type': 'application/json' });
                 res.end(ghlRes.body);
