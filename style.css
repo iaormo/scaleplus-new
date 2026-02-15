@@ -1099,6 +1099,8 @@ body:hover .cursor-glow { opacity: 1; }
 .contact-item svg { color: var(--purple); flex-shrink: 0; }
 
 .contact-form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: flex; gap: 16px; }
+.form-row .form-group { flex: 1; }
 
 .form-input {
     width: 100%;
@@ -1612,6 +1614,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
    RESPONSIVE: MOBILE (768px)
    ============================================ */
 @media (max-width: 768px) {
+    .form-row { flex-direction: column; gap: 12px; }
+
     .nav-links {
         display: none;
         position: fixed;

@@ -237,22 +237,22 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
 
             const formData = new FormData(contactForm);
-            const fullName = formData.get('name') || '';
-            const nameParts = fullName.trim().split(/\s+/);
-            const firstName = nameParts[0] || '';
-            const lastName = nameParts.slice(1).join(' ') || '';
 
             const payload = {
-                firstName,
-                lastName,
+                firstName: formData.get('firstName') || '',
+                lastName: formData.get('lastName') || '',
                 email: formData.get('email'),
+                phone: formData.get('phone') || '',
                 tags: ['website-lead'],
-                source: 'ScalePlus Website',
-                customFields: [
-                    { key: 'service_interest', field_value: formData.get('service') || '' },
-                    { key: 'message', field_value: formData.get('message') || '' }
-                ]
+                source: 'ScalePlus Website'
             };
+
+            const notes = (formData.get('notes') || '').trim();
+            if (notes) {
+                payload.customFields = [
+                    { key: 'notes', field_value: notes }
+                ];
+            }
 
             try {
                 const res = await fetch('https://services.leadconnectorhq.com/contacts/', {

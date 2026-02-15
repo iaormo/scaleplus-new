@@ -768,25 +768,24 @@
                     </div>
                 </div>
                 <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" required class="form-input" autocomplete="name">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" name="firstName" placeholder="First Name" required class="form-input" autocomplete="given-name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="lastName" placeholder="Last Name" required class="form-input" autocomplete="family-name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Email Address" required class="form-input" autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="phone" placeholder="Phone Number" class="form-input" autocomplete="tel">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="email" placeholder="Your Email" required class="form-input" autocomplete="email">
-                    </div>
-                    <div class="form-group">
-                        <select name="service" class="form-input">
-                            <option value="" disabled selected>What do you need?</option>
-                            <option value="automation">AI Automation & Workflows</option>
-                            <option value="chatbot">AI Chatbot</option>
-                            <option value="web">Custom Web Development</option>
-                            <option value="crm">CRM & System Integration</option>
-                            <option value="ecommerce">E Commerce Solutions</option>
-                            <option value="other">Other / Not Sure</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Tell us about your project..." rows="4" class="form-input"></textarea>
+                        <textarea name="notes" placeholder="Tell us about your project..." rows="4" class="form-input"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary liquid-btn btn-full">
                         <span>Send Message</span>
