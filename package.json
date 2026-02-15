@@ -1,0 +1,11 @@
+{
+  "name": "scaleplus-website",
+  "version": "1.0.0",
+  "description": "ScalePlus Philippines - AI Automation & Business Systems",
+  "scripts": {
+    "start": "npx serve -s . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}

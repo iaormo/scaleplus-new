@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>ScalePlus Philippines | AI Automation, Web Development & Custom Systems</title>
+    <meta name="description" content="ScalePlus Philippines builds AI powered systems, custom web applications, and workflow automation that help businesses save 30+ hours per week and scale faster.">
+    <meta name="keywords" content="AI automation Philippines, business automation, custom web development, AI chatbots, CRM integration, workflow automation, ScalePlus">
+    <meta name="author" content="ScalePlus Philippines">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ScalePlus Philippines | AI Automation & Business Systems">
+    <meta property="og:description" content="We build AI powered systems, custom web apps, and workflow automation that save businesses 30+ hours per week.">
+    <meta property="og:url" content="https://scaleplus.io">
+    <meta property="og:site_name" content="ScalePlus Philippines">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ScalePlus Philippines | AI Automation & Business Systems">
+    <meta name="twitter:description" content="We build AI powered systems, custom web apps, and workflow automation that save businesses 30+ hours per week.">
+    <link rel="canonical" href="https://scaleplus.io">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ScalePlus Philippines",
+        "url": "https://scaleplus.io",
+        "description": "AI Powered System Development and Business Automation",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "PH"
+        },
+        "sameAs": []
+    }
+    </script>
+</head>
+<body>
+    <!-- Flying Particles Canvas -->
+    <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Cursor Liquid Glow -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- Flying Icons (decorative) -->
+    <div class="flying-icons" aria-hidden="true">
+        <div class="flying-icon fi-1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>
+        <div class="flying-icon fi-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <div class="flying-icon fi-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <div class="flying-icon fi-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="flying-icon fi-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="flying-icon fi-6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" aria-label="ScalePlus Home">
+                <span class="logo-scale">Scale</span><span class="logo-plus">+</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="nav-cta">Get Started</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg" aria-hidden="true">
+            <div class="hero-grid"></div>
+            <div class="hero-aurora"></div>
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-ring hero-ring-1"></div>
+            <div class="hero-ring hero-ring-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                AI Powered Automation Agency
+            </div>
+            <h1 class="hero-title">
+                <span class="hero-line-1">Automate Your Business.</span>
+                <span class="hero-gradient glitch-text" data-text="Scale Without Limits.">Scale Without Limits.</span>
+            </h1>
+            <p class="hero-subtitle">
+                We build AI powered systems, custom web applications, and workflow automation
+                that save businesses 30+ hours per week so you can focus on growth, not grunt work.
+            </p>
+            <div class="hero-ctas">
+                <a href="#contact" class="btn btn-primary liquid-btn">
+                    <span>Get Free Automation Audit</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#process" class="btn btn-ghost">
+                    <span>See How It Works</span>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-count="100">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Businesses Automated</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="30">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Hours Saved Weekly</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="98">0</span><span class="stat-percent">%</span>
+                    <span class="stat-label">Client Satisfaction</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll" aria-hidden="true">
+            <div class="scroll-indicator">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span>AI Automation</span><span class="marquee-dot"></span>
+                <span>Web Development</span><span class="marquee-dot"></span>
+                <span>Custom Systems</span><span class="marquee-dot"></span>
+                <span>CRM Integration</span><span class="marquee-dot"></span>
+                <span>AI Chatbots</span><span class="marquee-dot"></span>
+                <span>Workflow Automation</span><span class="marquee-dot"></span>
+                <span>E Commerce</span><span class="marquee-dot"></span>
+                <span>AI Automation</span><span class="marquee-dot"></span>
+                <span>Web Development</span><span class="marquee-dot"></span>
+                <span>Custom Systems</span><span class="marquee-dot"></span>
+                <span>CRM Integration</span><span class="marquee-dot"></span>
+                <span>AI Chatbots</span><span class="marquee-dot"></span>
+                <span>Workflow Automation</span><span class="marquee-dot"></span>
+                <span>E Commerce</span><span class="marquee-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">What We Do</span>
+                <h2 class="section-title">Services Built to <span class="text-purple">Scale You</span></h2>
+                <p class="section-subtitle">End to end solutions from automation to custom development. Everything your business needs to run on autopilot.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>AI Automation & Workflows</h3>
+                    <p>Eliminate repetitive tasks with intelligent automation. We connect your tools, automate data flows, and build AI powered workflows that run 24/7.</p>
+                </div>
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+                    </div>
+                    <h3>AI Chatbots & Assistants</h3>
+                    <p>Deploy intelligent chatbots that handle 80%+ of customer inquiries. Multilingual, multi channel across WhatsApp, Messenger, Web, and more.</p>
+                </div>
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+                    </div>
+                    <h3>Custom Web Development</h3>
+                    <p>From landing pages to full SaaS platforms. We build fast, modern, responsive web applications tailored to your exact business needs.</p>
+                </div>
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <h3>CRM & System Integration</h3>
+                    <p>Connect your CRM, ERP, and business tools into one seamless ecosystem. Automated lead scoring, pipeline management, and data sync.</p>
+                </div>
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                    </div>
+                    <h3>E Commerce & Payment Systems</h3>
+                    <p>Launch automated online stores with integrated payments, inventory management, order processing, and customer service bots.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-visual">
+                    <div class="about-orb" aria-hidden="true"></div>
+                    <div class="about-card-stack">
+                        <div class="about-float-card afc-1">
+                            <span class="afc-number">500+</span>
+                            <span class="afc-label">Automations Deployed</span>
+                        </div>
+                        <div class="about-float-card afc-2">
+                            <span class="afc-number">24/7</span>
+                            <span class="afc-label">Systems Running</span>
+                        </div>
+                        <div class="about-float-card afc-3">
+                            <span class="afc-number">6 12mo</span>
+                            <span class="afc-label">Average ROI</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">Who We Are</span>
+                    <h2 class="section-title">We're the <span class="text-purple">automation partner</span> your business deserves.</h2>
+                    <p>ScalePlus Philippines is an AI powered system development and business automation agency. We help businesses eliminate manual chaos, deploy intelligent systems, and scale operations without scaling headcount.</p>
+                    <p>Founded with a mission to make enterprise level automation accessible to businesses of all sizes, we combine cutting edge AI technology with deep business process expertise.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Filipino led, globally competitive</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>End to end from strategy to deployment</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>1000+ tool integrations supported</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Ongoing support and optimization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">How It Works</span>
+                <h2 class="section-title">From Chaos to <span class="text-purple">Autopilot</span> in 4 Steps</h2>
+                <p class="section-subtitle">A proven process that takes you from manual overload to automated efficiency.</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-line" aria-hidden="true"></div>
+                <div class="process-step liquid-card">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Discover & Audit</h3>
+                        <p>We map your current workflows, identify bottlenecks, and uncover automation opportunities with the highest ROI potential.</p>
+                    </div>
+                </div>
+                <div class="process-step liquid-card">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Design & Strategize</h3>
+                        <p>We architect a custom automation blueprint, selecting the right tools, integrations, and AI models for your specific needs.</p>
+                    </div>
+                </div>
+                <div class="process-step liquid-card">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Build & Deploy</h3>
+                        <p>We develop, test, and launch your automated systems with minimal disruption. Your team gets full training and documentation.</p>
+                    </div>
+                </div>
+                <div class="process-step liquid-card">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Optimize & Scale</h3>
+                        <p>We monitor performance, squash bugs, and continuously optimize. As your business grows, your systems grow with it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results / Social Proof -->
+    <section class="results" id="results">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Results That Speak</span>
+                <h2 class="section-title">What Our Clients <span class="text-purple">Experience</span></h2>
+            </div>
+            <div class="results-grid">
+                <div class="result-card liquid-card">
+                    <div class="result-metric">40hrs<span>/mo</span></div>
+                    <p class="result-desc">Average time saved per client through workflow automation</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric">150<span>%</span></div>
+                    <p class="result-desc">Average increase in lead conversion with AI chatbots</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric">6<span>mo</span></div>
+                    <p class="result-desc">Average time to full ROI on automation investment</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric">99.9<span>%</span></div>
+                    <p class="result-desc">System uptime across all deployed automation solutions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Work</span>
+                <h2 class="section-title">Industries We've <span class="text-purple">Automated</span></h2>
+                <p class="section-subtitle">Real projects across niches. Here is what we built and the automation flow behind each one.</p>
+            </div>
+            <div class="portfolio-grid">
+
+                <!-- E-commerce AI Platform -->
+                <div class="portfolio-card liquid-card" data-niche="ecommerce">
+                    <div class="portfolio-icon ecommerce-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                    </div>
+                    <span class="portfolio-tag">AI Integration</span>
+                    <h3>E-commerce AI Platform</h3>
+                    <p>Custom AI powered e-commerce platform with intelligent product recommendations, chatbot support, and automated inventory management.</p>
+                    <div class="flowchart" data-color="#a855f7">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                            <span>Customer Visits Store</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2"/></svg></div>
+                            <span>AI Product Recommendations</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                            <span>Chatbot Handles Support</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                            <span>Auto Inventory Management</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>35%</strong><span>More conversions</span></div>
+                        <div class="ps-item"><strong>70%</strong><span>Less CS queries</span></div>
+                        <div class="ps-item"><strong>Auto</strong><span>Inventory sync</span></div>
+                    </div>
+                </div>
+
+                <!-- Beauty Lounge Automation -->
+                <div class="portfolio-card liquid-card" data-niche="beauty">
+                    <div class="portfolio-icon beauty-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </div>
+                    <span class="portfolio-tag">Business Automation</span>
+                    <h3>Beauty Lounge Automation</h3>
+                    <p>Comprehensive automation and event management system for beauty lounge operations and customer engagement.</p>
+                    <div class="flowchart" data-color="#db7093">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                            <span>Customer Inquiry Received</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+                            <span>Auto Booking + Event Scheduler</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                            <span>Automated Customer Follow Ups</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+                            <span>Streamlined Operations</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>45%</strong><span>More bookings</span></div>
+                        <div class="ps-item"><strong>Auto</strong><span>Follow ups</span></div>
+                        <div class="ps-item"><strong>100%</strong><span>Streamlined</span></div>
+                    </div>
+                </div>
+
+                <!-- Construction Field Agent App -->
+                <div class="portfolio-card liquid-card" data-niche="construction">
+                    <div class="portfolio-icon construction-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="12" width="6" height="10"/><rect x="9" y="6" width="6" height="16"/><rect x="17" y="2" width="6" height="20"/></svg>
+                    </div>
+                    <span class="portfolio-tag">Mobile Web App</span>
+                    <h3>Construction Field Agent App</h3>
+                    <p>Web based ordering system for construction company field agents to manage materials and equipment orders in real time.</p>
+                    <div class="flowchart" data-color="#f59e0b">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+                            <span>Field Agent Opens App</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+                            <span>Material + Equipment Order</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                            <span>Real Time Inventory Sync</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Order Confirmed + Dispatched</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>60%</strong><span>Faster orders</span></div>
+                        <div class="ps-item"><strong>Live</strong><span>Inventory</span></div>
+                        <div class="ps-item"><strong>3x</strong><span>Productivity</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- More projects row -->
+            <div class="portfolio-grid portfolio-grid-bottom">
+
+                <!-- Custom CRM for Real Estate -->
+                <div class="portfolio-card liquid-card" data-niche="realestate">
+                    <div class="portfolio-icon realestate-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <span class="portfolio-tag">CRM Development</span>
+                    <h3>Custom CRM for Real Estate</h3>
+                    <p>Tailored customer relationship management system designed specifically for real estate agencies with automated follow ups.</p>
+                    <div class="flowchart" data-color="#3b82f6">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                            <span>New Lead Captured</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+                            <span>Auto Lead Scoring + Routing</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                            <span>Automated Follow Up Sequence</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Deal Closed on Mobile</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>3x</strong><span>Faster leads</span></div>
+                        <div class="ps-item"><strong>Auto</strong><span>Follow ups</span></div>
+                        <div class="ps-item"><strong>Mobile</strong><span>First design</span></div>
+                    </div>
+                </div>
+
+                <!-- Manufacturing Automation -->
+                <div class="portfolio-card liquid-card" data-niche="manufacturing">
+                    <div class="portfolio-icon manufacturing-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    </div>
+                    <span class="portfolio-tag">Business Automation</span>
+                    <h3>Manufacturing Automation</h3>
+                    <p>End to end automation solution for manufacturing company, streamlining production processes and quality control.</p>
+                    <div class="flowchart" data-color="#ef4444">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+                            <span>Production Order Created</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2"/></svg></div>
+                            <span>Automated Process Pipeline</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+                            <span>Real Time Quality Monitoring</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Production Complete + Report</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>40%</strong><span>Faster output</span></div>
+                        <div class="ps-item"><strong>99.5%</strong><span>Quality rate</span></div>
+                        <div class="ps-item"><strong>Live</strong><span>Monitoring</span></div>
+                    </div>
+                </div>
+
+                <!-- Massage Chain Rewards -->
+                <div class="portfolio-card liquid-card" data-niche="wellness">
+                    <div class="portfolio-icon wellness-glow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <span class="portfolio-tag">Loyalty Platform</span>
+                    <h3>Massage Chain Rewards</h3>
+                    <p>Custom rewards and loyalty program platform designed specifically for massage therapy chain operations.</p>
+                    <div class="flowchart" data-color="#22c55e">
+                        <div class="fc-node fc-trigger">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                            <span>Customer Checks In</span>
+                            <div class="fc-pulse"></div>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-process">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                            <span>Points Auto Calculated</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-action">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                            <span>Reward Notification Sent</span>
+                        </div>
+                        <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div><div class="fc-data-dot"></div></div>
+                        <div class="fc-node fc-output">
+                            <div class="fc-node-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Repeat Visit Booked</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-stats">
+                        <div class="ps-item"><strong>55%</strong><span>More repeats</span></div>
+                        <div class="ps-item"><strong>Auto</strong><span>Engagement</span></div>
+                        <div class="ps-item"><strong>Unified</strong><span>Loyalty</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Client Love</span>
+                <h2 class="section-title">Trusted by <span class="text-purple">Growing Businesses</span></h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card liquid-card">
+                    <span class="testimonial-service-tag">AI Chatbot & Automation</span>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The AI chatbot integration completely transformed our customer service. Response time dropped from hours to seconds, and our conversion rate increased by 35%. The automation workflows saved us countless hours."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><span>MD</span></div>
+                        <div>
+                            <strong>Marketing Director</strong>
+                            <span>E-commerce & Retail</span>
+                            <span class="testimonial-location">Manila, Philippines</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card liquid-card">
+                    <span class="testimonial-service-tag">Custom CRM & Lead Automation</span>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Custom lead management system with automated follow ups has streamlined our entire sales process. We are closing deals 3x faster and our team can focus on what matters most, building relationships."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><span>OM</span></div>
+                        <div>
+                            <strong>Operations Manager</strong>
+                            <span>Real Estate</span>
+                            <span class="testimonial-location">Sydney, Australia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card liquid-card">
+                    <span class="testimonial-service-tag">Appointment Automation & Patient Management</span>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The appointment scheduling automation and patient reminder system has reduced no shows by 60%. Our staff can now focus on patient care instead of administrative tasks."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><span>BO</span></div>
+                        <div>
+                            <strong>Business Owner</strong>
+                            <span>Healthcare Services</span>
+                            <span class="testimonial-location">Davao, Philippines</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card liquid-card">
+                    <span class="testimonial-service-tag">Custom Website & Payment Automation</span>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Custom website with integrated payment processing and automated invoicing has revolutionized our billing process. Client satisfaction improved dramatically with the streamlined experience."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><span>DS</span></div>
+                        <div>
+                            <strong>Digital Strategist</strong>
+                            <span>Professional Services</span>
+                            <span class="testimonial-location">Melbourne, Australia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card liquid-card">
+                    <span class="testimonial-service-tag">Multi-Channel Communication & Lead Generation</span>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The multi channel communication automation has helped us reach prospects across all platforms seamlessly. Our lead generation increased by 200% in just 3 months."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><span>SM</span></div>
+                        <div>
+                            <strong>Sales Manager</strong>
+                            <span>Manufacturing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Got <span class="text-purple">Questions?</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How much does automation cost?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>Projects range from simple chatbot deployments to full enterprise automation suites. We offer a free audit to scope your needs and provide transparent pricing. Most clients see full ROI within 6 to 12 months.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How long does implementation take?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>Simple automations take 1 to 2 weeks. Complex systems with multiple integrations typically take 4 to 8 weeks. We offer proof of concept builds in as little as 5 days so you can validate before committing.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Do I need technical knowledge?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>Not at all. We design user friendly systems and provide complete training, documentation, and video walkthroughs. Your team will be confident managing everything day to day.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can you work with our existing tools?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>Absolutely. We integrate with 1000+ platforms including Salesforce, HubSpot, Zoho, Google Workspace, Microsoft 365, QuickBooks, Shopify, and custom APIs. If it has an API, we can connect it.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What happens if the automation breaks?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>We provide monitoring, automated alerts, and dedicated support. Most issues are resolved within 24 hours. All systems include automatic fallback mechanisms so your business never stops.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Will automation replace our employees?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>No. Automation handles repetitive, low value tasks so your team can focus on high impact work like strategy, customer relationships, and growth. Think of it as giving your team superpowers.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can we start small and scale up?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>That is exactly what we recommend. Start with one high impact automation, see the results, then expand from there. Our systems are modular and designed to scale with your business.</p>
+                    </div>
+                </div>
+                <div class="faq-item liquid-card">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What industries do you serve?</span>
+                        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-answer" role="region">
+                        <p>E commerce, healthcare, real estate, finance, legal, professional services, and more. Our automation frameworks are industry agnostic and we customize every solution to your specific workflows.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <div class="cta-orb" aria-hidden="true"></div>
+                <h2>Ready to Put Your Business on <span class="text-purple">Autopilot?</span></h2>
+                <p>Book a free automation audit. We will map your workflows, identify quick wins, and show you exactly how much time and money you can save.</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary liquid-btn">
+                        <span>Schedule Free Consultation</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Get In Touch</span>
+                    <h2 class="section-title">Let's Build Something <span class="text-purple">Incredible</span></h2>
+                    <p>Whether you need a single chatbot or a full business automation overhaul, we are ready. Drop us a message and we will get back to you within 24 hours.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <span>hello@scaleplus.io</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>Philippines</span>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required class="form-input" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required class="form-input" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <select name="service" class="form-input">
+                            <option value="" disabled selected>What do you need?</option>
+                            <option value="automation">AI Automation & Workflows</option>
+                            <option value="chatbot">AI Chatbot</option>
+                            <option value="web">Custom Web Development</option>
+                            <option value="crm">CRM & System Integration</option>
+                            <option value="ecommerce">E Commerce Solutions</option>
+                            <option value="other">Other / Not Sure</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Tell us about your project..." rows="4" class="form-input"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary liquid-btn btn-full">
+                        <span>Send Message</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo" aria-label="ScalePlus Home">
+                        <span class="logo-scale">Scale</span><span class="logo-plus">+</span>
+                    </a>
+                    <p>AI Powered System Development and Business Automation for Philippine businesses ready to scale.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <a href="#services">AI Automation</a>
+                    <a href="#services">AI Chatbots</a>
+                    <a href="#services">Web Development</a>
+                    <a href="#services">CRM Integration</a>
+                    <a href="#services">E Commerce</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#about">About Us</a>
+                    <a href="#process">How It Works</a>
+                    <a href="#results">Results</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <a href="#">Facebook</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter / X</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ScalePlus Philippines. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scan line overlay -->
+    <div class="scanline-overlay" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
