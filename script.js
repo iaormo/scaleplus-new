@@ -259,13 +259,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const res = await fetch('https://services.leadconnectorhq.com/contacts/', {
+                const res = await fetch('/api/contact', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer pit-ae349e92-1fa6-4656-ae9d-b015d2ba2de3',
-                        'Content-Type': 'application/json',
-                        'Version': '2021-07-28'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
