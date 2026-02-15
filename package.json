@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "ScalePlus Philippines - AI Automation & Business Systems",
   "scripts": {
-    "start": "npx serve -s . -l $PORT"
+    "start": "node server.js"
   },
-  "dependencies": {
-    "serve": "^14.2.0"
+  "engines": {
+    "node": ">=18"
   }
 }
