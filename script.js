@@ -388,13 +388,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 
-    if (popupClose) {
-        popupClose.addEventListener('click', () => popupOverlay.classList.remove('active'));
+    function closePopup() {
+        if (popupOverlay) popupOverlay.classList.remove('active');
     }
-    if (popupOverlay) {
-        popupOverlay.addEventListener('click', (e) => {
-            if (e.target === popupOverlay) popupOverlay.classList.remove('active');
-        });
+    if (popupClose) {
+        popupClose.addEventListener('click', closePopup);
+    }
+    const popupSkip = document.getElementById('popupSkip');
+    if (popupSkip) {
+        popupSkip.addEventListener('click', closePopup);
     }
 
     if (popupForm) {

@@ -1194,21 +1194,20 @@ select.form-input:valid { color: var(--text-primary); }
 textarea.form-input { resize: vertical; min-height: 120px; }
 
 /* ============================================
-   POPUP CTA
+   POPUP CTA — FULL SCREEN TAKEOVER
    ============================================ */
 .popup-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
+    z-index: 10000;
+    background: var(--bg-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-    padding: 20px;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    overflow-y: auto;
 }
 .popup-overlay.active {
     opacity: 1;
@@ -1216,66 +1215,94 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 }
 .popup-card {
     position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 20px;
-    padding: 40px 36px;
-    max-width: 520px;
     width: 100%;
-    transform: translateY(30px) scale(0.95);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
+    max-width: 560px;
+    padding: 60px 40px;
+    transform: scale(0.9);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
 }
 .popup-overlay.active .popup-card {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
 }
 .popup-glow {
     position: absolute;
-    top: -60px;
+    top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15), transparent 70%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.12), transparent 70%);
     pointer-events: none;
 }
 .popup-close {
-    position: absolute;
-    top: 16px;
-    right: 20px;
+    position: fixed;
+    top: 24px;
+    right: 32px;
     background: none;
-    border: none;
+    border: 1px solid var(--border-subtle);
     color: var(--text-muted);
-    font-size: 28px;
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     cursor: pointer;
-    line-height: 1;
-    transition: color 0.2s;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    z-index: 10001;
 }
-.popup-close:hover { color: var(--text-primary); }
+.popup-close:hover {
+    color: var(--text-primary);
+    border-color: var(--purple);
+    background: rgba(168, 85, 247, 0.1);
+}
 .popup-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, var(--text-primary), var(--purple));
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 .popup-subtitle {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 24px;
-    line-height: 1.5;
+    font-size: 1.05rem;
+    margin-bottom: 36px;
+    line-height: 1.6;
 }
-.popup-card .contact-form { gap: 12px; }
-.popup-card .form-input { padding: 12px 16px; font-size: 0.875rem; }
-.popup-card textarea.form-input { min-height: 80px; }
+.popup-card .contact-form {
+    gap: 14px;
+    text-align: left;
+}
+.popup-card .form-input {
+    padding: 14px 18px;
+    font-size: 0.9375rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+}
+.popup-card textarea.form-input { min-height: 90px; }
+.popup-skip {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: color 0.2s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.popup-skip:hover { color: var(--text-secondary); }
 
 @media (max-width: 768px) {
-    .popup-card { padding: 28px 20px; }
-    .popup-title { font-size: 1.3rem; }
+    .popup-card { padding: 80px 24px 40px; }
+    .popup-close { top: 16px; right: 16px; width: 38px; height: 38px; font-size: 20px; }
     .popup-card .form-row { flex-direction: column; gap: 10px; }
 }
 
