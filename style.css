@@ -1738,19 +1738,42 @@ textarea.form-input { resize: vertical; min-height: 120px; }
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(5, 5, 5, 0.97);
+        background: rgba(5, 5, 5, 0.98);
         backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 24px;
-        z-index: 999;
+        gap: 28px;
+        z-index: 10001;
+        padding: 80px 20px 40px;
     }
 
     .nav-links.active { display: flex; }
-    .nav-links a { font-size: 1.25rem; }
 
-    .nav-toggle { display: flex; z-index: 1001; }
+    .nav-links li { list-style: none; text-align: center; }
+
+    .nav-links a {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .nav-links .nav-cta {
+        margin-top: 12px;
+        padding: 12px 32px;
+        font-size: 1.1rem;
+    }
+
+    .nav-toggle {
+        display: flex;
+        z-index: 10002;
+        position: relative;
+    }
+
+    .nav-toggle span {
+        background: var(--text-primary);
+    }
 
     .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .nav-toggle.active span:nth-child(2) { opacity: 0; }
