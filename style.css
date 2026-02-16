@@ -123,6 +123,72 @@ body:hover .cursor-glow { opacity: 1; }
 }
 
 /* ============================================
+   ORBITING ROCKET
+   ============================================ */
+.rocket-orbit {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9997;
+    overflow: hidden;
+}
+.rocket {
+    position: absolute;
+    animation: rocketOrbit 18s linear infinite;
+}
+.rocket svg {
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+    transform: rotate(-45deg);
+}
+.rocket-trail {
+    position: absolute;
+    bottom: 2px;
+    left: -40px;
+    width: 45px;
+    height: 3px;
+    background: linear-gradient(to left, rgba(168, 85, 247, 0.7), rgba(168, 85, 247, 0.2), transparent);
+    border-radius: 2px;
+    transform: rotate(-45deg);
+    transform-origin: right center;
+    animation: trailPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes rocketOrbit {
+    0%   { top: 110%; left: -5%;  transform: rotate(0deg); }
+    10%  { top: 70%;  left: 15%; }
+    20%  { top: 30%;  left: 40%; }
+    30%  { top: 5%;   left: 65%; }
+    40%  { top: -5%;  left: 90%; transform: rotate(0deg); }
+    /* Re-enter from bottom-right */
+    41%  { top: 110%; left: 105%; transform: rotate(180deg); }
+    50%  { top: 80%;  left: 85%; }
+    60%  { top: 50%;  left: 60%; }
+    70%  { top: 25%;  left: 35%; }
+    80%  { top: -5%;  left: 10%; transform: rotate(180deg); }
+    /* Re-enter from bottom-left */
+    81%  { top: 110%; left: -5%;  transform: rotate(0deg); }
+    90%  { top: 85%;  left: 20%; }
+    100% { top: 110%; left: -5%;  transform: rotate(0deg); }
+}
+
+@keyframes trailPulse {
+    0%   { opacity: 0.4; width: 30px; }
+    100% { opacity: 0.9; width: 50px; }
+}
+
+@media (max-width: 768px) {
+    .rocket svg { width: 20px; height: 20px; }
+    .rocket-trail { width: 30px; left: -28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rocket-orbit { display: none; }
+}
+
+/* ============================================
    NAVBAR
    ============================================ */
 .navbar {
@@ -1805,6 +1871,6 @@ textarea.form-input { resize: vertical; min-height: 120px; }
         transition-duration: 0.01ms !important;
     }
     .particle-canvas, .flying-icons, .scanline-overlay,
-    .hero-aurora, .hero-ring, .cursor-glow { display: none; }
+    .hero-aurora, .hero-ring, .cursor-glow, .rocket-orbit { display: none; }
     .portfolio-card { animation: none !important; }
 }
