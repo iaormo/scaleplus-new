@@ -127,12 +127,22 @@ const server = http.createServer((req, res) => {
                     res.end('Server Error');
                     return;
                 }
-                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.writeHead(200, {
+                    'Content-Type': 'text/html',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                });
                 res.end(fallback);
             });
             return;
         }
-        res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' });
+        res.writeHead(200, {
+            'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        });
         res.end(data);
     });
 });
