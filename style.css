@@ -1128,6 +1128,92 @@ select.form-input:valid { color: var(--text-primary); }
 textarea.form-input { resize: vertical; min-height: 120px; }
 
 /* ============================================
+   POPUP CTA
+   ============================================ */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    padding: 20px;
+}
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.popup-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 40px 36px;
+    max-width: 520px;
+    width: 100%;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+.popup-overlay.active .popup-card {
+    transform: translateY(0) scale(1);
+}
+.popup-glow {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.15), transparent 70%);
+    pointer-events: none;
+}
+.popup-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    z-index: 1;
+}
+.popup-close:hover { color: var(--text-primary); }
+.popup-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text-primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.popup-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+.popup-card .contact-form { gap: 12px; }
+.popup-card .form-input { padding: 12px 16px; font-size: 0.875rem; }
+.popup-card textarea.form-input { min-height: 80px; }
+
+@media (max-width: 768px) {
+    .popup-card { padding: 28px 20px; }
+    .popup-title { font-size: 1.3rem; }
+    .popup-card .form-row { flex-direction: column; gap: 10px; }
+}
+
+/* ============================================
    FOOTER
    ============================================ */
 .footer {

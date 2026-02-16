@@ -161,6 +161,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const statNumbers = document.querySelectorAll('.stat-number');
     let counterStarted = false;
 
+    function rollNumber(el, from, to, duration, onDone) {
+        let start = null;
+        function tick(ts) {
+            if (!start) start = ts;
+            const p = Math.min((ts - start) / duration, 1);
+            const ease = from < to ? (1 - Math.pow(1 - p, 3)) : Math.pow(1 - p, 2);
+            el.textContent = Math.floor(from + (to - from) * (from < to ? ease : 1 - ease));
+            if (p < 1) requestAnimationFrame(tick);
+            else { el.textContent = to; if (onDone) onDone(); }
+        }
+        requestAnimationFrame(tick);
+    }
+
     function startRollingCounters() {
         if (counterStarted) return;
         const heroStats = document.querySelector('.hero-stats');
@@ -169,36 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
             counterStarted = true;
             statNumbers.forEach(num => {
                 const target = parseInt(num.getAttribute('data-count'));
-                const rollUp = 2000;
-                const pauseTime = 3000;
-                const rollDown = 1200;
-
-                function animateCycle() {
-                    // Roll up from 0 to target
-                    const upStart = performance.now();
-                    function tickUp(now) {
-                        const p = Math.min((now - upStart) / rollUp, 1);
-                        const ease = 1 - Math.pow(1 - p, 3);
-                        num.textContent = Math.floor(target * ease);
-                        if (p < 1) { requestAnimationFrame(tickUp); }
-                        else { num.textContent = target; setTimeout(rollDownPhase, pauseTime); }
-                    }
-                    requestAnimationFrame(tickUp);
-
-                    // Roll down from target to 0
-                    function rollDownPhase() {
-                        const downStart = performance.now();
-                        function tickDown(now) {
-                            const p = Math.min((now - downStart) / rollDown, 1);
-                            const ease = Math.pow(1 - p, 2);
-                            num.textContent = Math.floor(target * ease);
-                            if (p < 1) { requestAnimationFrame(tickDown); }
-                            else { num.textContent = 0; setTimeout(animateCycle, 400); }
-                        }
-                        requestAnimationFrame(tickDown);
-                    }
+                function cycle() {
+                    rollNumber(num, 0, target, 2000, () => {
+                        setTimeout(() => {
+                            rollNumber(num, target, 0, 1200, () => {
+                                setTimeout(cycle, 400);
+                            });
+                        }, 3000);
+                    });
                 }
-                animateCycle();
+                cycle();
             });
         }
     }
@@ -381,6 +374,72 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 50);
             }, 500);
         }
+    }
+
+    // --- Popup CTA (first visit, after 5 seconds) ---
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupClose = document.getElementById('popupClose');
+    const popupForm = document.getElementById('popupForm');
+
+    if (popupOverlay && !sessionStorage.getItem('popupShown')) {
+        setTimeout(() => {
+            popupOverlay.classList.add('active');
+            sessionStorage.setItem('popupShown', '1');
+        }, 5000);
+    }
+
+    if (popupClose) {
+        popupClose.addEventListener('click', () => popupOverlay.classList.remove('active'));
+    }
+    if (popupOverlay) {
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) popupOverlay.classList.remove('active');
+        });
+    }
+
+    if (popupForm) {
+        popupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = popupForm.querySelector('button[type="submit"]');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<span>Sending...</span>';
+            btn.disabled = true;
+
+            const fd = new FormData(popupForm);
+            const payload = {
+                firstName: fd.get('firstName') || '',
+                lastName: fd.get('lastName') || '',
+                email: fd.get('email'),
+                phone: fd.get('phone') || '',
+                service: fd.get('service') || '',
+                notes: (fd.get('notes') || '').trim()
+            };
+
+            try {
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    btn.innerHTML = '<span>Message Sent!</span>';
+                    btn.style.background = '#22c55e';
+                    popupForm.reset();
+                    setTimeout(() => popupOverlay.classList.remove('active'), 2000);
+                } else {
+                    btn.innerHTML = '<span>Something went wrong</span>';
+                    btn.style.background = '#ef4444';
+                }
+            } catch (err) {
+                btn.innerHTML = '<span>Network error — try again</span>';
+                btn.style.background = '#ef4444';
+            }
+            setTimeout(() => {
+                btn.innerHTML = original;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 3000);
+        });
     }
 
     // --- Flowchart Stagger Entrance ---
