@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const GHL_API = 'https://services.leadconnectorhq.com/contacts/';
+const GHL_BASE = 'https://services.leadconnectorhq.com';
 const GHL_TOKEN = 'pit-ae349e92-1fa6-4656-ae9d-b015d2ba2de3';
 const GHL_LOCATION_ID = 'GfDBeSbJmjBtcqGK6vXN';
 
@@ -25,28 +25,31 @@ const MIME_TYPES = {
     '.webp': 'image/webp'
 };
 
-function proxyToGHL(body) {
+function ghlRequest(method, apiPath, body) {
     return new Promise((resolve, reject) => {
-        const data = JSON.stringify(body);
-        const url = new URL(GHL_API);
+        const data = body ? JSON.stringify(body) : '';
         const options = {
-            hostname: url.hostname,
-            path: url.pathname,
-            method: 'POST',
+            hostname: 'services.leadconnectorhq.com',
+            path: apiPath,
+            method,
             headers: {
                 'Authorization': 'Bearer ' + GHL_TOKEN,
                 'Content-Type': 'application/json',
-                'Version': '2021-07-28',
-                'Content-Length': Buffer.byteLength(data)
+                'Version': '2021-07-28'
             }
         };
+        if (data) options.headers['Content-Length'] = Buffer.byteLength(data);
         const req = https.request(options, (res) => {
             let responseBody = '';
             res.on('data', chunk => responseBody += chunk);
-            res.on('end', () => resolve({ status: res.statusCode, body: responseBody }));
+            res.on('end', () => {
+                let parsed = null;
+                try { parsed = JSON.parse(responseBody); } catch (e) {}
+                resolve({ status: res.statusCode, body: responseBody, json: parsed });
+            });
         });
         req.on('error', reject);
-        req.write(data);
+        if (data) req.write(data);
         req.end();
     });
 }
@@ -58,11 +61,49 @@ const server = http.createServer((req, res) => {
         req.on('data', chunk => body += chunk);
         req.on('end', async () => {
             try {
-                const payload = JSON.parse(body);
-                payload.locationId = GHL_LOCATION_ID;
-                const ghlRes = await proxyToGHL(payload);
-                res.writeHead(ghlRes.status, { 'Content-Type': 'application/json' });
-                res.end(ghlRes.body);
+                const form = JSON.parse(body);
+
+                // Build clean GHL contact payload (no customFields)
+                const contactPayload = {
+                    locationId: GHL_LOCATION_ID,
+                    firstName: form.firstName || '',
+                    lastName: form.lastName || '',
+                    email: form.email || '',
+                    phone: form.phone || '',
+                    tags: ['website-lead'],
+                    source: 'ScalePlus Website'
+                };
+
+                // Add service as a tag if provided
+                if (form.service) {
+                    contactPayload.tags.push(form.service);
+                }
+
+                // Step 1: Create or update contact
+                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                console.log('GHL contact response:', contactRes.status, contactRes.body);
+
+                if (contactRes.status !== 200 && contactRes.status !== 201) {
+                    res.writeHead(contactRes.status, { 'Content-Type': 'application/json' });
+                    res.end(contactRes.body);
+                    return;
+                }
+
+                const contactId = contactRes.json && contactRes.json.contact && contactRes.json.contact.id;
+
+                // Step 2: Add notes if provided and we got a contact ID
+                if (contactId && form.notes) {
+                    const noteBody = form.service
+                        ? 'Service Needed: ' + form.service + '\n\n' + form.notes
+                        : form.notes;
+                    const noteRes = await ghlRequest('POST', '/contacts/' + contactId + '/notes', {
+                        body: noteBody
+                    });
+                    console.log('GHL note response:', noteRes.status, noteRes.body);
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
             } catch (err) {
                 console.error('GHL proxy error:', err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
