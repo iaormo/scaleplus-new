@@ -383,13 +383,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (popupOverlay && !sessionStorage.getItem('popupShown')) {
         setTimeout(() => {
-            popupOverlay.classList.add('active');
+            popupOverlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    popupOverlay.classList.add('active');
+                });
+            });
             sessionStorage.setItem('popupShown', '1');
         }, 5000);
     }
 
     function closePopup() {
-        if (popupOverlay) popupOverlay.classList.remove('active');
+        if (!popupOverlay) return;
+        popupOverlay.classList.remove('active');
+        setTimeout(() => { popupOverlay.style.display = 'none'; }, 500);
     }
     if (popupClose) {
         popupClose.addEventListener('click', closePopup);
