@@ -157,33 +157,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Counter Animation ---
+    // --- Counter Animation (continuous rolling with pause) ---
     const statNumbers = document.querySelectorAll('.stat-number');
-    let counterAnimated = false;
+    let counterStarted = false;
 
-    function animateCounters() {
-        if (counterAnimated) return;
+    function startRollingCounters() {
+        if (counterStarted) return;
         const heroStats = document.querySelector('.hero-stats');
         if (!heroStats) return;
         if (heroStats.getBoundingClientRect().top < window.innerHeight * 0.9) {
-            counterAnimated = true;
+            counterStarted = true;
             statNumbers.forEach(num => {
                 const target = parseInt(num.getAttribute('data-count'));
-                const duration = 2000;
-                const start = performance.now();
-                function tick(now) {
-                    const progress = Math.min((now - start) / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    num.textContent = Math.floor(target * ease);
-                    if (progress < 1) requestAnimationFrame(tick);
-                    else num.textContent = target;
+                const rollUp = 2000;
+                const pauseTime = 3000;
+                const rollDown = 1200;
+
+                function animateCycle() {
+                    // Roll up from 0 to target
+                    const upStart = performance.now();
+                    function tickUp(now) {
+                        const p = Math.min((now - upStart) / rollUp, 1);
+                        const ease = 1 - Math.pow(1 - p, 3);
+                        num.textContent = Math.floor(target * ease);
+                        if (p < 1) { requestAnimationFrame(tickUp); }
+                        else { num.textContent = target; setTimeout(rollDownPhase, pauseTime); }
+                    }
+                    requestAnimationFrame(tickUp);
+
+                    // Roll down from target to 0
+                    function rollDownPhase() {
+                        const downStart = performance.now();
+                        function tickDown(now) {
+                            const p = Math.min((now - downStart) / rollDown, 1);
+                            const ease = Math.pow(1 - p, 2);
+                            num.textContent = Math.floor(target * ease);
+                            if (p < 1) { requestAnimationFrame(tickDown); }
+                            else { num.textContent = 0; setTimeout(animateCycle, 400); }
+                        }
+                        requestAnimationFrame(tickDown);
+                    }
                 }
-                requestAnimationFrame(tick);
+                animateCycle();
             });
         }
     }
-    window.addEventListener('scroll', animateCounters, { passive: true });
-    animateCounters();
+    window.addEventListener('scroll', startRollingCounters, { passive: true });
+    startRollingCounters();
 
     // --- FAQ Accordion ---
     document.querySelectorAll('.faq-item').forEach(item => {
