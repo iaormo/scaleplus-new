@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>ScalePlus CRM | All-In-One Business Growth Platform</title>
+    <meta name="description" content="ScalePlus CRM is the all-in-one platform to capture leads, automate follow-ups, manage pipelines, book appointments, and close deals — all from one dashboard.">
+    <meta name="keywords" content="CRM Philippines, all-in-one CRM, lead management, sales automation, appointment scheduling, pipeline management, ScalePlus CRM">
+    <meta name="author" content="ScalePlus Philippines">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ScalePlus CRM | All-In-One Business Growth Platform">
+    <meta property="og:description" content="Capture leads, automate follow-ups, manage pipelines, and close deals from one dashboard.">
+    <meta property="og:url" content="https://scaleplus.io/crm">
+    <meta property="og:site_name" content="ScalePlus Philippines">
+    <link rel="canonical" href="https://scaleplus.io/crm">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="crm.css">
+</head>
+<body>
+    <!-- Flying Particles Canvas -->
+    <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Cursor Liquid Glow -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="ScalePlus Home">
+                <span class="logo-scale">Scale</span><span class="logo-plus">+</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#portfolio">Portfolio</a></li>
+                <li><a href="#crm-features">CRM Features</a></li>
+                <li><a href="#crm-compare">Compare</a></li>
+                <li><a href="#crm-contact" class="nav-cta">Get the CRM</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- CRM Hero Section -->
+    <section class="hero crm-hero" id="crm-hero">
+        <div class="hero-bg" aria-hidden="true">
+            <div class="hero-grid"></div>
+            <div class="hero-aurora"></div>
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-ring hero-ring-1"></div>
+            <div class="hero-ring hero-ring-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                All-In-One Business Growth Platform
+            </div>
+            <h1 class="hero-title">
+                <span class="hero-line-1">Stop Juggling 10 Tools.</span>
+                <span class="hero-gradient glitch-text" data-text="One Platform. Total Control.">One Platform. Total Control.</span>
+            </h1>
+            <p class="hero-subtitle">
+                ScalePlus CRM gives you everything you need to capture leads, automate follow-ups,
+                manage pipelines, book appointments, send invoices, and close more deals — all from one dashboard.
+            </p>
+            <div class="hero-ctas">
+                <a href="#crm-contact" class="btn btn-primary liquid-btn">
+                    <span>Get ScalePlus CRM Now</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#crm-features" class="btn btn-ghost">
+                    <span>See All Features</span>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-count="20">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Tools Replaced</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="80">0</span><span class="stat-percent">%</span>
+                    <span class="stat-label">Less Software Cost</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="3">0</span><span class="stat-plus">x</span>
+                    <span class="stat-label">More Deals Closed</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll" aria-hidden="true">
+            <div class="scroll-indicator">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span>Lead Capture</span><span class="marquee-dot"></span>
+                <span>Sales Pipeline</span><span class="marquee-dot"></span>
+                <span>Email Marketing</span><span class="marquee-dot"></span>
+                <span>SMS & WhatsApp</span><span class="marquee-dot"></span>
+                <span>Appointment Booking</span><span class="marquee-dot"></span>
+                <span>Invoicing</span><span class="marquee-dot"></span>
+                <span>Reputation Management</span><span class="marquee-dot"></span>
+                <span>Lead Capture</span><span class="marquee-dot"></span>
+                <span>Sales Pipeline</span><span class="marquee-dot"></span>
+                <span>Email Marketing</span><span class="marquee-dot"></span>
+                <span>SMS & WhatsApp</span><span class="marquee-dot"></span>
+                <span>Appointment Booking</span><span class="marquee-dot"></span>
+                <span>Invoicing</span><span class="marquee-dot"></span>
+                <span>Reputation Management</span><span class="marquee-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRM Features Section -->
+    <section class="services crm-features" id="crm-features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Everything You Need</span>
+                <h2 class="section-title">One Platform to <span class="text-purple">Run Your Business</span></h2>
+                <p class="section-subtitle">No more switching between apps. ScalePlus CRM combines 20+ tools into one powerful dashboard with dedicated support from our team.</p>
+            </div>
+            <div class="services-grid crm-grid">
+
+                <!-- Feature 1: Pipeline & Deals -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                    </div>
+                    <h3>Sales Pipeline & Deals</h3>
+                    <p>Visual drag-and-drop pipeline to track every deal from lead to close. Automated stage movements, deal values, and win probability tracking.</p>
+                </div>
+
+                <!-- Feature 2: Contact Management -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <h3>Smart Contact Management</h3>
+                    <p>Unified contact profiles with full conversation history across all channels. Custom fields, tags, lead scoring, and smart lists to segment your audience.</p>
+                </div>
+
+                <!-- Feature 3: Multi-Channel Messaging -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+                    </div>
+                    <h3>Multi-Channel Messaging</h3>
+                    <p>Email, SMS, WhatsApp, Facebook Messenger, Instagram DMs, and Google Business Chat — all from a single unified inbox. Never miss a lead again.</p>
+                </div>
+
+                <!-- Feature 4: Email Marketing & Automation -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <h3>Email Marketing & Automation</h3>
+                    <p>Beautiful email campaigns with drag-and-drop builder. Automated drip sequences, A/B testing, open tracking, and smart send times.</p>
+                </div>
+
+                <!-- Feature 5: Appointment Scheduling -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </div>
+                    <h3>Appointment Scheduling</h3>
+                    <p>Built-in calendar with online booking pages. Automated reminders via email and SMS, round-robin assignment, and Google/Outlook calendar sync.</p>
+                </div>
+
+                <!-- Feature 6: Landing Pages & Funnels -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+                    </div>
+                    <h3>Landing Pages & Funnels</h3>
+                    <p>Drag-and-drop page builder to create high-converting landing pages, sales funnels, and opt-in forms without any coding knowledge.</p>
+                </div>
+
+                <!-- Feature 7: Workflow Automation -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>Workflow Automation</h3>
+                    <p>Visual automation builder to create if/then workflows. Auto-assign leads, trigger SMS sequences, move pipeline stages, and send notifications.</p>
+                </div>
+
+                <!-- Feature 8: Invoicing & Payments -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+                    </div>
+                    <h3>Invoicing & Payments</h3>
+                    <p>Create and send professional invoices, accept online payments via Stripe, set up recurring billing, and track revenue all in one place.</p>
+                </div>
+
+                <!-- Feature 9: Reputation Management -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <h3>Reputation Management</h3>
+                    <p>Automatically request Google reviews from happy customers. Monitor and respond to reviews, track your rating over time, and build social proof.</p>
+                </div>
+
+                <!-- Feature 10: Reporting & Analytics -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21H3V3"/><path d="M18 9l-5 5-2-2-4 4"/></svg>
+                    </div>
+                    <h3>Reporting & Analytics</h3>
+                    <p>Real-time dashboards showing lead sources, conversion rates, revenue, campaign performance, and team activity. Data-driven decisions made easy.</p>
+                </div>
+
+                <!-- Feature 11: Website & Chat Widget -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    </div>
+                    <h3>Website & Chat Widget</h3>
+                    <p>Build full websites with the built-in website builder. Add a live chat widget to capture visitors in real time and convert them into leads instantly.</p>
+                </div>
+
+                <!-- Feature 12: Dedicated Support -->
+                <div class="service-card liquid-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                    </div>
+                    <h3>Our Dedicated Support Team</h3>
+                    <p>Unlike other platforms, you get direct access to the ScalePlus support team. Real humans who know your business and help you get the most out of every feature.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Results / What You Replace -->
+    <section class="results crm-replaces" id="crm-replaces">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Replace Everything</span>
+                <h2 class="section-title">Tools You Can <span class="text-purple">Cancel Today</span></h2>
+            </div>
+            <div class="results-grid crm-replaces-grid">
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <p class="result-desc">Mailchimp, ActiveCampaign, ConvertKit</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </div>
+                    <p class="result-desc">Calendly, Acuity, Cal.com</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    </div>
+                    <p class="result-desc">Intercom, Drift, LiveChat</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    </div>
+                    <p class="result-desc">ClickFunnels, Leadpages, Unbounce</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <p class="result-desc">Podium, Birdeye, Reputation.com</p>
+                </div>
+                <div class="result-card liquid-card">
+                    <div class="result-metric crm-replace-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+                    </div>
+                    <p class="result-desc">FreshBooks, QuickBooks Invoicing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRM Comparison Section -->
+    <section class="crm-comparison" id="crm-compare">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why ScalePlus CRM</span>
+                <h2 class="section-title">See How We <span class="text-purple">Stack Up</span></h2>
+                <p class="section-subtitle">Other CRMs charge you for each feature separately. ScalePlus CRM gives you everything in one plan.</p>
+            </div>
+            <div class="compare-table-wrap">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th class="compare-feature-col">Feature</th>
+                            <th class="compare-highlight">ScalePlus CRM</th>
+                            <th>HubSpot</th>
+                            <th>Salesforce</th>
+                            <th>Zoho CRM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Contact & Lead Management</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Visual Sales Pipeline</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Email Marketing & Campaigns</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                        </tr>
+                        <tr>
+                            <td>SMS & WhatsApp Messaging</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Appointment Scheduling</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                        </tr>
+                        <tr>
+                            <td>Landing Pages & Funnels</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Website Builder</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Reputation Management</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Invoicing & Payments</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                        </tr>
+                        <tr>
+                            <td>Workflow Automation</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                        </tr>
+                        <tr>
+                            <td>Unified Inbox (All Channels)</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                            <td><span class="compare-x">&#10007;</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dedicated Human Support</td>
+                            <td class="compare-highlight"><span class="compare-check">&#10003;</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-paid">Paid Add-on</span></td>
+                            <td><span class="compare-limited">Limited</span></td>
+                        </tr>
+                        <tr class="compare-price-row">
+                            <td>Typical Monthly Cost</td>
+                            <td class="compare-highlight"><strong class="compare-price-value">Contact Us</strong></td>
+                            <td><span class="compare-price-other">$800+/mo</span></td>
+                            <td><span class="compare-price-other">$1,250+/mo</span></td>
+                            <td><span class="compare-price-other">$300+/mo</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <div class="cta-orb" aria-hidden="true"></div>
+                <h2>Ready to Consolidate Your Tools Into <span class="text-purple">One Platform?</span></h2>
+                <p>Stop paying for 10 different subscriptions. Get ScalePlus CRM and run your entire business from a single dashboard with our support team behind you.</p>
+                <div class="cta-buttons">
+                    <a href="#crm-contact" class="btn btn-primary liquid-btn">
+                        <span>Get ScalePlus CRM</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRM Contact / Get Started Form -->
+    <section class="contact crm-contact-section" id="crm-contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Get Started</span>
+                    <h2 class="section-title">Get <span class="text-purple">ScalePlus CRM</span> for Your Business</h2>
+                    <p>Fill out the form and our team will reach out to set up your CRM, migrate your data, and get you running in no time. Full onboarding and training included.</p>
+                    <div class="crm-benefits-list">
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Full onboarding and data migration</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Dedicated support from real humans</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Custom automations built for your workflow</span>
+                        </div>
+                        <div class="about-feature">
+                            <div class="af-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span>Cancel or switch anytime — no lock-in</span>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="crmForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" name="firstName" placeholder="First Name" required class="form-input" autocomplete="given-name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="lastName" placeholder="Last Name" required class="form-input" autocomplete="family-name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email Address" required class="form-input" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Phone Number" required class="form-input" autocomplete="tel">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="business" placeholder="Business Name" required class="form-input" autocomplete="organization">
+                    </div>
+                    <button type="submit" class="btn btn-primary liquid-btn btn-full">
+                        <span>Get ScalePlus CRM Now</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Powered By Section -->
+    <section class="crm-powered-by">
+        <div class="container">
+            <div class="powered-by-content">
+                <p class="powered-by-text">Powered by</p>
+                <span class="powered-by-logo">GoHighLevel</span>
+                <p class="powered-by-sub">Industry-leading infrastructure trusted by 50,000+ businesses worldwide — whitelabeled and supported by ScalePlus Philippines.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo" aria-label="ScalePlus Home">
+                        <span class="logo-scale">Scale</span><span class="logo-plus">+</span>
+                    </a>
+                    <p>AI Powered System Development and Business Automation for Philippine businesses ready to scale.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <a href="index.html#services">AI Automation</a>
+                    <a href="index.html#services">AI Chatbots</a>
+                    <a href="index.html#services">Web Development</a>
+                    <a href="crm.html">ScalePlus CRM</a>
+                    <a href="index.html#services">E Commerce</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="index.html#about">About Us</a>
+                    <a href="index.html#process">How It Works</a>
+                    <a href="index.html#results">Results</a>
+                    <a href="index.html#faq">FAQ</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <a href="#">Facebook</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter / X</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ScalePlus Philippines. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CRM Success Overlay -->
+    <div class="crm-success-overlay" id="crmSuccessOverlay" style="display:none;position:fixed;inset:0">
+        <div class="crm-success-card">
+            <div class="crm-success-glow" aria-hidden="true"></div>
+            <div class="crm-success-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h2 class="crm-success-title">You're All Set!</h2>
+            <p class="crm-success-text">Our team will contact you within <strong>24 hours</strong> to get your ScalePlus CRM up and running.</p>
+            <p class="crm-success-sub">We'll walk you through onboarding, data migration, and your custom setup — no extra charge.</p>
+            <button class="btn btn-primary liquid-btn" id="crmSuccessClose">
+                <span>Got It</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scan line overlay -->
+    <div class="scanline-overlay" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+    <script src="crm.js"></script>
+</body>
+</html>

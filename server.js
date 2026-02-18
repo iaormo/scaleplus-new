@@ -113,9 +113,60 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // --- API proxy for CRM lead form ---
+    if (req.method === 'POST' && req.url === '/api/crm-lead') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+            try {
+                const form = JSON.parse(body);
+
+                const contactPayload = {
+                    locationId: GHL_LOCATION_ID,
+                    firstName: form.firstName || '',
+                    lastName: form.lastName || '',
+                    email: form.email || '',
+                    phone: form.phone || '',
+                    companyName: form.business || '',
+                    tags: ['crm-buyers'],
+                    source: 'ScalePlus CRM Page'
+                };
+
+                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                console.log('GHL CRM lead response:', contactRes.status, contactRes.body);
+
+                if (contactRes.status !== 200 && contactRes.status !== 201) {
+                    res.writeHead(contactRes.status, { 'Content-Type': 'application/json' });
+                    res.end(contactRes.body);
+                    return;
+                }
+
+                const contactId = contactRes.json && contactRes.json.contact && contactRes.json.contact.id;
+
+                if (contactId && form.business) {
+                    const noteBody = 'CRM Lead - Business: ' + form.business + '\nInterested in ScalePlus CRM platform.';
+                    const noteRes = await ghlRequest('POST', '/contacts/' + contactId + '/notes', {
+                        body: noteBody
+                    });
+                    console.log('GHL CRM note response:', noteRes.status, noteRes.body);
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+            } catch (err) {
+                console.error('GHL CRM proxy error:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Server error' }));
+            }
+        });
+        return;
+    }
+
     // --- Static files ---
     let filePath = req.url === '/' ? '/index.html' : req.url;
     filePath = filePath.split('?')[0];
+    // Route /crm to crm.html
+    if (filePath === '/crm') filePath = '/crm.html';
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
 
