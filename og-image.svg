@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <text x="600" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="96" fill="#ffffff">Scale<tspan fill="#a855f7">Plus</tspan></text>
+  <text x="600" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="32" fill="rgba(255,255,255,0.6)">AI Automation &amp; Web Development Agency</text>
+  <rect x="480" y="400" width="240" height="3" rx="1.5" fill="#a855f7" opacity="0.6"/>
+</svg>

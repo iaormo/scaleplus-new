@@ -376,78 +376,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Popup CTA (first visit, after 5 seconds) ---
-    const popupOverlay = document.getElementById('popupOverlay');
-    const popupClose = document.getElementById('popupClose');
-    const popupForm = document.getElementById('popupForm');
+    // --- Promo Popup (10 seconds, once per visitor) ---
+    const promoPopup = document.getElementById('promoPopup');
+    const promoClose = document.getElementById('popupClose');
+    const promoCta = document.getElementById('popupCta');
 
-    if (popupOverlay && !sessionStorage.getItem('popupShown')) {
+    if (promoPopup && !localStorage.getItem('promoPopupDismissed')) {
         setTimeout(() => {
-            popupOverlay.style.display = 'flex';
+            promoPopup.style.display = 'flex';
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    popupOverlay.classList.add('active');
+                    promoPopup.classList.add('active');
                 });
             });
-            sessionStorage.setItem('popupShown', '1');
-        }, 5000);
+        }, 10000);
     }
 
-    function closePopup() {
-        if (!popupOverlay) return;
-        popupOverlay.classList.remove('active');
-        setTimeout(() => { popupOverlay.style.display = 'none'; }, 500);
-    }
-    if (popupClose) {
-        popupClose.addEventListener('click', closePopup);
-    }
-    const popupSkip = document.getElementById('popupSkip');
-    if (popupSkip) {
-        popupSkip.addEventListener('click', closePopup);
+    function closePromoPopup() {
+        if (!promoPopup) return;
+        promoPopup.classList.remove('active');
+        localStorage.setItem('promoPopupDismissed', '1');
+        setTimeout(() => { promoPopup.style.display = 'none'; }, 500);
     }
 
-    if (popupForm) {
-        popupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = popupForm.querySelector('button[type="submit"]');
-            const original = btn.innerHTML;
-            btn.innerHTML = '<span>Sending...</span>';
-            btn.disabled = true;
-
-            const fd = new FormData(popupForm);
-            const payload = {
-                firstName: fd.get('firstName') || '',
-                lastName: fd.get('lastName') || '',
-                email: fd.get('email'),
-                phone: fd.get('phone') || '',
-                service: fd.get('service') || '',
-                notes: (fd.get('notes') || '').trim()
-            };
-
-            try {
-                const res = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (res.ok) {
-                    btn.innerHTML = '<span>Message Sent!</span>';
-                    btn.style.background = '#22c55e';
-                    popupForm.reset();
-                    setTimeout(() => popupOverlay.classList.remove('active'), 2000);
-                } else {
-                    btn.innerHTML = '<span>Something went wrong</span>';
-                    btn.style.background = '#ef4444';
-                }
-            } catch (err) {
-                btn.innerHTML = '<span>Network error — try again</span>';
-                btn.style.background = '#ef4444';
-            }
-            setTimeout(() => {
-                btn.innerHTML = original;
-                btn.style.background = '';
-                btn.disabled = false;
-            }, 3000);
+    if (promoClose) promoClose.addEventListener('click', closePromoPopup);
+    if (promoPopup) {
+        promoPopup.addEventListener('click', (e) => {
+            if (e.target === promoPopup) closePromoPopup();
+        });
+    }
+    if (promoCta) {
+        promoCta.addEventListener('click', () => {
+            closePromoPopup();
         });
     }
 
