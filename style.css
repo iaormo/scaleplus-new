@@ -240,7 +240,7 @@ body:hover .cursor-glow { opacity: 1; }
     justify-content: center;
     position: relative;
     overflow: hidden;
-    padding: 120px 24px 60px;
+    padding: 120px 48px 60px;
 }
 
 .hero-bg {
@@ -361,7 +361,7 @@ body:hover .cursor-glow { opacity: 1; }
 }
 
 .hero-title {
-    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
     font-weight: 900;
     line-height: 1.15;
     letter-spacing: -2px;
@@ -377,7 +377,7 @@ body:hover .cursor-glow { opacity: 1; }
 
 .hero-line-1 {
     display: block;
-    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
     font-weight: 900;
     color: #ffffff;
     letter-spacing: -1.5px;
@@ -402,6 +402,7 @@ body:hover .cursor-glow { opacity: 1; }
     animation: heroGradientFlow 4s ease-in-out infinite, heroTextReveal 0.8s ease-out 0.6s forwards;
     opacity: 0;
     filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.3));
+    white-space: nowrap;
 }
 
 @keyframes heroGradientFlow {
@@ -462,11 +463,10 @@ body:hover .cursor-glow { opacity: 1; }
 .hero-subtitle {
     font-size: 1.05rem;
     color: var(--text-secondary);
-    max-width: 640px;
+    max-width: 960px;
     margin: 0 auto 44px;
     line-height: 1.75;
-    text-align: justify;
-    text-align-last: center;
+    text-align: center;
     opacity: 0;
     animation: heroFadeUp 0.8s ease-out 0.8s forwards;
 }
