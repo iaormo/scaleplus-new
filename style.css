@@ -156,14 +156,13 @@ body:hover .cursor-glow { opacity: 1; }
     justify-content: space-between;
 }
 
-.nav-logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
-.logo-scale { color: var(--text-primary); }
-.logo-plus { color: var(--purple); }
+.nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+.nav-logo-img { height: 32px; width: auto; }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
     list-style: none;
 }
 
@@ -193,15 +192,20 @@ body:hover .cursor-glow { opacity: 1; }
 .nav-cta {
     background: var(--purple);
     color: #fff !important;
-    padding: 8px 20px;
-    border-radius: 8px;
+    padding: 10px 24px;
+    border-radius: 50px;
     font-weight: 600 !important;
+    font-size: 0.8125rem !important;
     transition: all 0.3s !important;
+    white-space: nowrap;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4), 0 0 30px rgba(168, 85, 247, 0.15);
+    letter-spacing: 0.3px;
 }
 
 .nav-cta:hover {
     background: var(--purple-dark);
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 50px rgba(168, 85, 247, 0.3), 0 0 80px rgba(168, 85, 247, 0.1);
+    transform: translateY(-1px);
 }
 
 .nav-cta::after { display: none !important; }
@@ -214,6 +218,7 @@ body:hover .cursor-glow { opacity: 1; }
     border: none;
     cursor: pointer;
     padding: 4px;
+    margin-left: auto;
 }
 
 .nav-toggle span {
@@ -2116,6 +2121,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
         left: 0;
         right: 0;
         bottom: 0;
+        transform: none;
         background: rgba(5, 5, 5, 0.8);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
