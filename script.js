@@ -157,46 +157,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Counter Animation (continuous rolling with pause) ---
+    // --- Counter Animation (animate once, then stop) ---
     const statNumbers = document.querySelectorAll('.stat-number');
     let counterStarted = false;
 
-    function rollNumber(el, from, to, duration, onDone) {
+    function animateNumber(el, target, duration) {
         let start = null;
         function tick(ts) {
             if (!start) start = ts;
             const p = Math.min((ts - start) / duration, 1);
-            const ease = from < to ? (1 - Math.pow(1 - p, 3)) : Math.pow(1 - p, 2);
-            el.textContent = Math.floor(from + (to - from) * (from < to ? ease : 1 - ease));
+            const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+            el.textContent = Math.round(target * ease);
             if (p < 1) requestAnimationFrame(tick);
-            else { el.textContent = to; if (onDone) onDone(); }
+            else el.textContent = target;
         }
         requestAnimationFrame(tick);
     }
 
-    function startRollingCounters() {
+    function startCounters() {
         if (counterStarted) return;
         const heroStats = document.querySelector('.hero-stats');
         if (!heroStats) return;
-        if (heroStats.getBoundingClientRect().top < window.innerHeight * 0.9) {
+        if (heroStats.getBoundingClientRect().top < window.innerHeight * 0.95) {
             counterStarted = true;
             statNumbers.forEach(num => {
                 const target = parseInt(num.getAttribute('data-count'));
-                function cycle() {
-                    rollNumber(num, 0, target, 2000, () => {
-                        setTimeout(() => {
-                            rollNumber(num, target, 0, 1200, () => {
-                                setTimeout(cycle, 400);
-                            });
-                        }, 3000);
-                    });
-                }
-                cycle();
+                animateNumber(num, target, 2000);
             });
+            window.removeEventListener('scroll', startCounters);
         }
     }
-    window.addEventListener('scroll', startRollingCounters, { passive: true });
-    startRollingCounters();
+    window.addEventListener('scroll', startCounters, { passive: true });
+    startCounters();
 
     // --- FAQ Accordion ---
     document.querySelectorAll('.faq-item').forEach(item => {
@@ -229,15 +221,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function checkReveal() {
-        document.querySelectorAll('.reveal').forEach(el => {
-            if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
-                el.classList.add('visible');
-            }
-        });
+    // Use IntersectionObserver for reliable reveal (fires once per element)
+    if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px 80px 0px', threshold: 0.01 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    } else {
+        // Fallback: show everything immediately
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
     }
-    window.addEventListener('scroll', checkReveal, { passive: true });
-    checkReveal();
 
     // --- Contact Form → GoHighLevel ---
     const contactForm = document.getElementById('contactForm');
@@ -376,20 +375,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Promo Popup (10 seconds, once per visitor) ---
+    // --- Promo Popup (after 45s + scroll past 40%, once per visitor) ---
     const promoPopup = document.getElementById('promoPopup');
     const promoClose = document.getElementById('popupClose');
     const promoCta = document.getElementById('popupCta');
 
     if (promoPopup && !localStorage.getItem('promoPopupDismissed')) {
-        setTimeout(() => {
+        let promoTimerReady = false;
+        let promoScrollReady = false;
+        let promoShown = false;
+
+        function showPromoIfReady() {
+            if (promoShown || !promoTimerReady || !promoScrollReady) return;
+            promoShown = true;
             promoPopup.style.display = 'flex';
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     promoPopup.classList.add('active');
                 });
             });
-        }, 10000);
+        }
+
+        setTimeout(() => { promoTimerReady = true; showPromoIfReady(); }, 45000);
+
+        window.addEventListener('scroll', function promoScrollCheck() {
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            if (scrollPercent > 0.4) {
+                promoScrollReady = true;
+                window.removeEventListener('scroll', promoScrollCheck);
+                showPromoIfReady();
+            }
+        }, { passive: true });
     }
 
     function closePromoPopup() {

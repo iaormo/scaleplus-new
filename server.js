@@ -3,10 +3,19 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
+// Load .env file if present (no dependency required)
+try {
+    const envFile = fs.readFileSync(path.join(__dirname, '.env'), 'utf8');
+    envFile.split('\n').forEach(line => {
+        const [key, ...val] = line.split('=');
+        if (key && val.length) process.env[key.trim()] = val.join('=').trim();
+    });
+} catch (e) { /* .env not found, use system env vars */ }
+
 const PORT = process.env.PORT || 3000;
 const GHL_BASE = 'https://services.leadconnectorhq.com';
-const GHL_TOKEN = 'pit-ae349e92-1fa6-4656-ae9d-b015d2ba2de3';
-const GHL_LOCATION_ID = 'GfDBeSbJmjBtcqGK6vXN';
+const GHL_TOKEN = process.env.GHL_TOKEN || '';
+const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || '';
 
 const MIME_TYPES = {
     '.html': 'text/html',
@@ -162,11 +171,75 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // --- API proxy for CRM signup form ---
+    if (req.method === 'POST' && req.url === '/api/crm-signup') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+            try {
+                const form = JSON.parse(body);
+
+                // Calculate trial expiry: 14 days from now
+                const trialExpiry = new Date();
+                trialExpiry.setDate(trialExpiry.getDate() + 14);
+                const trialExpiryStr = trialExpiry.toISOString().split('T')[0]; // YYYY-MM-DD
+
+                const contactPayload = {
+                    locationId: GHL_LOCATION_ID,
+                    firstName: form.firstName || '',
+                    lastName: form.lastName || '',
+                    email: form.email || '',
+                    phone: form.phone || '',
+                    companyName: form.business || '',
+                    website: form.website || '',
+                    tags: ['crm-signup', 'free-trial', form.industry || 'unknown-industry'],
+                    source: 'ScalePlus CRM Signup Page'
+                };
+
+                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                console.log('GHL CRM signup response:', contactRes.status, contactRes.body);
+
+                if (contactRes.status !== 200 && contactRes.status !== 201) {
+                    res.writeHead(contactRes.status, { 'Content-Type': 'application/json' });
+                    res.end(contactRes.body);
+                    return;
+                }
+
+                const contactId = contactRes.json && contactRes.json.contact && contactRes.json.contact.id;
+
+                if (contactId) {
+                    const noteBody = 'CRM Signup Request — FREE TRIAL (14 days)\n' +
+                        'Trial Expiry: ' + trialExpiryStr + '\n' +
+                        'Business: ' + (form.business || 'N/A') + '\n' +
+                        'Industry: ' + (form.industry || 'N/A') + '\n' +
+                        'Website: ' + (form.website || 'N/A') + '\n\n' +
+                        'ACTION REQUIRED: If tag is still "free-trial" (not changed to "subscriber") after ' + trialExpiryStr + ', remove CRM account access.';
+                    const noteRes = await ghlRequest('POST', '/contacts/' + contactId + '/notes', {
+                        body: noteBody
+                    });
+                    console.log('GHL CRM signup note response:', noteRes.status, noteRes.body);
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+            } catch (err) {
+                console.error('GHL CRM signup error:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Server error' }));
+            }
+        });
+        return;
+    }
+
     // --- Static files ---
     let filePath = req.url === '/' ? '/index.html' : req.url;
     filePath = filePath.split('?')[0];
     // Route /crm to crm.html
     if (filePath === '/crm') filePath = '/crm.html';
+    if (filePath === '/crm-signup') filePath = '/crm-signup.html';
+    if (filePath === '/case-study') filePath = '/case-study.html';
+    if (filePath === '/blog') filePath = '/blog.html';
+    if (filePath === '/blog-post') filePath = '/blog-post.html';
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
 
@@ -188,11 +261,15 @@ const server = http.createServer((req, res) => {
             });
             return;
         }
+        // HTML files: no cache. Static assets (css/js/images/fonts): cache 1 day
+        const isHTML = ext === '.html';
+        const cacheHeader = isHTML
+            ? 'no-cache, no-store, must-revalidate'
+            : 'public, max-age=86400, stale-while-revalidate=3600';
+
         res.writeHead(200, {
             'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
+            'Cache-Control': cacheHeader
         });
         res.end(data);
     });

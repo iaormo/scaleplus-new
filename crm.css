@@ -153,6 +153,36 @@
 }
 
 /* ============================================
+   CRM SIGNUP CTA SECTION
+   ============================================ */
+.crm-signup-cta {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.crm-signup-cta-text {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.crm-signup-benefits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+}
+
+.crm-signup-btn {
+    min-height: 52px;
+    font-size: 1rem;
+    padding: 14px 36px;
+}
+
+/* ============================================
    POWERED BY SECTION
    ============================================ */
 .crm-powered-by {

@@ -1,0 +1,271 @@
+/* ============================================
+   CRM SIGNUP PAGE — Additional Styles
+   ============================================ */
+
+/* Signup Hero */
+.signup-hero {
+    padding: 140px 0 80px;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.signup-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.signup-info {
+    padding-top: 20px;
+}
+
+.signup-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.signup-subtitle {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+/* Feature List */
+.signup-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.signup-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sf-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 8px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    color: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-feature span {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+/* Form Card */
+.signup-form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+}
+
+.form-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+}
+
+.form-card-sub {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+}
+
+.signup-btn {
+    margin-top: 8px;
+    min-height: 52px;
+    font-size: 1rem;
+}
+
+.form-disclaimer {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+/* Success Overlay */
+.signup-success-overlay {
+    z-index: 20000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.signup-success-overlay.active {
+    opacity: 1;
+}
+
+.signup-success-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 440px;
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.signup-success-overlay.active .signup-success-card {
+    transform: translateY(0) scale(1);
+}
+
+.signup-success-glow {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent 70%);
+    pointer-events: none;
+}
+
+.signup-success-icon {
+    margin-bottom: 20px;
+}
+
+.signup-success-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.signup-success-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.signup-success-text strong {
+    color: var(--purple);
+}
+
+.signup-success-sub {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.signup-success-sub strong {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   RESPONSIVE: TABLET (1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+    .signup-layout {
+        gap: 40px;
+    }
+
+    .signup-form-card {
+        padding: 32px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE: MOBILE (768px)
+   ============================================ */
+@media (max-width: 768px) {
+    .signup-hero {
+        padding: 120px 0 60px;
+        min-height: auto;
+    }
+
+    .signup-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .signup-info {
+        text-align: center;
+        padding-top: 0;
+    }
+
+    .signup-features {
+        align-items: center;
+    }
+
+    .signup-form-card {
+        padding: 28px 20px;
+    }
+
+    .form-card-title {
+        font-size: 1.25rem;
+    }
+
+    .signup-success-card {
+        padding: 36px 24px;
+    }
+
+    .signup-success-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE: SMALL MOBILE (480px)
+   ============================================ */
+@media (max-width: 480px) {
+    .signup-hero {
+        padding: 100px 0 40px;
+    }
+
+    .signup-title {
+        font-size: 1.5rem;
+    }
+
+    .signup-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    .signup-form-card {
+        padding: 24px 16px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
