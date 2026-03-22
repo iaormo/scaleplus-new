@@ -451,4 +451,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', animateFlowcharts, { passive: true });
     animateFlowcharts();
+
+    // --- Geo-based currency (PHP for Philippines, USD everywhere else) ---
+    (async function detectCurrency() {
+        const priceEls = document.querySelectorAll('.price-amount[data-usd]');
+        if (!priceEls.length) return;
+        let isPH = false;
+        try {
+            const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+            const data = await resp.json();
+            isPH = data.country_code === 'PH';
+        } catch (e) { /* default to USD */ }
+        priceEls.forEach(el => {
+            const usd = parseInt(el.dataset.usd);
+            const php = parseInt(el.dataset.php);
+            const currencyEl = el.querySelector('.price-currency');
+            const valueEl = el.querySelector('.price-value');
+            if (isPH) {
+                if (currencyEl) currencyEl.textContent = '\u20B1';
+                if (valueEl) valueEl.textContent = php.toLocaleString();
+                if (!valueEl && usd === 0) { /* free stays 0 */ }
+            } else {
+                if (currencyEl) currencyEl.textContent = '$';
+                if (valueEl) valueEl.textContent = usd.toLocaleString();
+            }
+        });
+    })();
 });

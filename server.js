@@ -240,6 +240,8 @@ const server = http.createServer((req, res) => {
     if (filePath === '/case-study') filePath = '/case-study.html';
     if (filePath === '/blog') filePath = '/blog.html';
     if (filePath === '/blog-post') filePath = '/blog-post.html';
+    if (filePath === '/privacy') filePath = '/privacy.html';
+    if (filePath === '/terms') filePath = '/terms.html';
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
 
