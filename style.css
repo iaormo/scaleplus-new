@@ -154,6 +154,8 @@ body:hover .cursor-glow { opacity: 1; }
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
@@ -218,7 +220,6 @@ body:hover .cursor-glow { opacity: 1; }
     border: none;
     cursor: pointer;
     padding: 4px;
-    margin-left: auto;
 }
 
 .nav-toggle span {
@@ -689,7 +690,7 @@ body:hover .cursor-glow { opacity: 1; }
 .section-subtitle {
     font-size: 1.0625rem;
     color: var(--text-secondary);
-    max-width: 560px;
+    max-width: 680px;
     margin: 0 auto;
     line-height: 1.7;
 }
@@ -2152,7 +2153,9 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .nav-toggle {
         display: flex;
         z-index: 10002;
-        position: relative;
+        position: fixed;
+        right: 24px;
+        top: 22px;
     }
 
     .nav-toggle span {
@@ -2165,7 +2168,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 
     .hero { padding: 100px 20px 60px; }
     .hero-title { letter-spacing: -1px; }
-    .hero-line-1 { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+    .hero-line-1 { font-size: clamp(1.6rem, 6vw, 2.2rem); white-space: normal; }
     .hero-gradient { }
     .hero-subtitle { text-align: center; text-align-last: center; font-size: 1rem; }
     .hero-ring { display: none; }
@@ -2208,10 +2211,10 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .container { padding: 0 16px; }
 
     .hero-title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
-    .hero-line-1 { font-size: clamp(1rem, 4vw, 1.4rem); }
-    .hero-subtitle { font-size: 0.9375rem; padding: 0 8px; }
-    .hero-ctas { flex-direction: column; align-items: stretch; }
-    .btn { justify-content: center; min-height: 48px; }
+    .hero-line-1 { font-size: clamp(1.5rem, 7vw, 2rem); white-space: normal; }
+    .hero-subtitle { font-size: 0.875rem; padding: 0 8px; }
+    .hero-ctas { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .btn { font-size: 0.8125rem; padding: 12px 20px; min-height: 44px; }
 
     .section-tag { font-size: 0.7rem; }
     .section-title { font-size: 1.5rem; }
