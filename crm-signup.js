@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(payload)
                 });
 
+                const data = await res.json().catch(() => ({}));
                 if (res.ok) {
                     signupForm.reset();
                     btn.innerHTML = original;
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.disabled = false;
                     showSuccessOverlay();
                 } else {
+                    console.error('CRM signup error:', res.status, data);
                     btn.innerHTML = '<span>Something went wrong</span>';
                     btn.style.background = '#ef4444';
                     setTimeout(() => {

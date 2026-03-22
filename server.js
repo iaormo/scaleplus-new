@@ -194,7 +194,13 @@ const server = http.createServer((req, res) => {
                     name: businessName,
                     email: form.email || '',
                     phone: form.phone || '',
+                    address: '',
+                    city: '',
+                    state: '',
+                    country: 'PH',
+                    postalCode: '',
                     website: form.website || '',
+                    timezone: 'Asia/Manila',
                     settings: {
                         allowDuplicateContact: false,
                         allowDuplicateOpportunity: false,
@@ -203,12 +209,15 @@ const server = http.createServer((req, res) => {
                 };
 
                 console.log('Creating GHL sub-account:', JSON.stringify(locationPayload));
-                const locRes = await ghlRequest('POST', '/locations', locationPayload, GHL_AGENCY_TOKEN);
+                console.log('Using agency token:', GHL_AGENCY_TOKEN ? 'SET (' + GHL_AGENCY_TOKEN.substring(0, 10) + '...)' : 'MISSING');
+                console.log('Company ID:', GHL_COMPANY_ID || 'MISSING');
+                const locRes = await ghlRequest('POST', '/locations/', locationPayload, GHL_AGENCY_TOKEN);
                 console.log('GHL sub-account response:', locRes.status, locRes.body);
 
                 if (locRes.status !== 200 && locRes.status !== 201) {
-                    res.writeHead(locRes.status, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: 'Failed to create sub-account', details: locRes.json }));
+                    console.error('GHL sub-account creation FAILED:', locRes.status, locRes.body);
+                    res.writeHead(locRes.status || 500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to create sub-account', status: locRes.status, details: locRes.json, raw: locRes.body }));
                     return;
                 }
 
