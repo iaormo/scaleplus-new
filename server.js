@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 const GHL_BASE = 'https://services.leadconnectorhq.com';
 const GHL_TOKEN = process.env.GHL_TOKEN || '';
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || '';
+const GHL_AGENCY_TOKEN = process.env.GHL_AGENCY_TOKEN || '';
 
 const MIME_TYPES = {
     '.html': 'text/html',
@@ -34,7 +35,7 @@ const MIME_TYPES = {
     '.webp': 'image/webp'
 };
 
-function ghlRequest(method, apiPath, body) {
+function ghlRequest(method, apiPath, body, token) {
     return new Promise((resolve, reject) => {
         const data = body ? JSON.stringify(body) : '';
         const options = {
@@ -42,7 +43,7 @@ function ghlRequest(method, apiPath, body) {
             path: apiPath,
             method,
             headers: {
-                'Authorization': 'Bearer ' + GHL_TOKEN,
+                'Authorization': 'Bearer ' + (token || GHL_TOKEN),
                 'Content-Type': 'application/json',
                 'Version': '2021-07-28',
                 'Accept': 'application/json'
@@ -183,46 +184,70 @@ const server = http.createServer((req, res) => {
                 // Calculate trial expiry: 14 days from now
                 const trialExpiry = new Date();
                 trialExpiry.setDate(trialExpiry.getDate() + 14);
-                const trialExpiryStr = trialExpiry.toISOString().split('T')[0]; // YYYY-MM-DD
+                const trialExpiryStr = trialExpiry.toISOString().split('T')[0];
 
+                // Step 1: Create sub-account (location) via Agency API
+                const businessName = form.business || ((form.firstName || '') + ' ' + (form.lastName || '')).trim() + ' Business';
+                const locationPayload = {
+                    companyId: GHL_LOCATION_ID,
+                    name: businessName,
+                    email: form.email || '',
+                    phone: form.phone || '',
+                    website: form.website || '',
+                    settings: {
+                        allowDuplicateContact: false,
+                        allowDuplicateOpportunity: false,
+                        allowFacebookNameMerge: false
+                    }
+                };
+
+                console.log('Creating GHL sub-account:', JSON.stringify(locationPayload));
+                const locRes = await ghlRequest('POST', '/locations', locationPayload, GHL_AGENCY_TOKEN);
+                console.log('GHL sub-account response:', locRes.status, locRes.body);
+
+                if (locRes.status !== 200 && locRes.status !== 201) {
+                    res.writeHead(locRes.status, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to create sub-account', details: locRes.json }));
+                    return;
+                }
+
+                const newLocationId = locRes.json && (locRes.json.id || (locRes.json.location && locRes.json.location.id));
+
+                // Step 2: Create contact in the agency's main location (for lead tracking)
                 const contactPayload = {
                     locationId: GHL_LOCATION_ID,
                     firstName: form.firstName || '',
                     lastName: form.lastName || '',
                     email: form.email || '',
                     phone: form.phone || '',
-                    companyName: form.business || '',
+                    companyName: businessName,
                     website: form.website || '',
                     tags: ['crm-signup', 'free-trial', form.industry || 'unknown-industry'],
                     source: 'ScalePlus CRM Signup Page'
                 };
 
                 const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload);
-                console.log('GHL CRM signup response:', contactRes.status, contactRes.body);
-
-                if (contactRes.status !== 200 && contactRes.status !== 201) {
-                    res.writeHead(contactRes.status, { 'Content-Type': 'application/json' });
-                    res.end(contactRes.body);
-                    return;
-                }
+                console.log('GHL contact response:', contactRes.status, contactRes.body);
 
                 const contactId = contactRes.json && contactRes.json.contact && contactRes.json.contact.id;
 
+                // Step 3: Add note with trial info and sub-account reference
                 if (contactId) {
-                    const noteBody = 'CRM Signup Request — FREE TRIAL (14 days)\n' +
+                    const noteBody = 'CRM Signup — FREE TRIAL (14 days)\n' +
+                        'Sub-Account ID: ' + (newLocationId || 'N/A') + '\n' +
                         'Trial Expiry: ' + trialExpiryStr + '\n' +
-                        'Business: ' + (form.business || 'N/A') + '\n' +
+                        'Business: ' + businessName + '\n' +
                         'Industry: ' + (form.industry || 'N/A') + '\n' +
                         'Website: ' + (form.website || 'N/A') + '\n\n' +
-                        'ACTION REQUIRED: If tag is still "free-trial" (not changed to "subscriber") after ' + trialExpiryStr + ', remove CRM account access.';
+                        'ACTION REQUIRED: If tag is still "free-trial" (not changed to "subscriber") after ' + trialExpiryStr + ', remove sub-account access.';
                     const noteRes = await ghlRequest('POST', '/contacts/' + contactId + '/notes', {
                         body: noteBody
                     });
-                    console.log('GHL CRM signup note response:', noteRes.status, noteRes.body);
+                    console.log('GHL note response:', noteRes.status, noteRes.body);
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true }));
+                res.end(JSON.stringify({ success: true, locationId: newLocationId }));
             } catch (err) {
                 console.error('GHL CRM signup error:', err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
