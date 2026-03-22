@@ -44,7 +44,8 @@ function ghlRequest(method, apiPath, body) {
             headers: {
                 'Authorization': 'Bearer ' + GHL_TOKEN,
                 'Content-Type': 'application/json',
-                'Version': '2021-07-28'
+                'Version': '2021-07-28',
+                'Accept': 'application/json'
             }
         };
         if (data) options.headers['Content-Length'] = Buffer.byteLength(data);
@@ -89,7 +90,7 @@ const server = http.createServer((req, res) => {
                 }
 
                 // Step 1: Create or update contact
-                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload);
                 console.log('GHL contact response:', contactRes.status, contactRes.body);
 
                 if (contactRes.status !== 200 && contactRes.status !== 201) {
@@ -141,7 +142,7 @@ const server = http.createServer((req, res) => {
                     source: 'ScalePlus CRM Page'
                 };
 
-                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload);
                 console.log('GHL CRM lead response:', contactRes.status, contactRes.body);
 
                 if (contactRes.status !== 200 && contactRes.status !== 201) {
@@ -196,7 +197,7 @@ const server = http.createServer((req, res) => {
                     source: 'ScalePlus CRM Signup Page'
                 };
 
-                const contactRes = await ghlRequest('POST', '/contacts/', contactPayload);
+                const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload);
                 console.log('GHL CRM signup response:', contactRes.status, contactRes.body);
 
                 if (contactRes.status !== 200 && contactRes.status !== 201) {
