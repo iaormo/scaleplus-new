@@ -213,7 +213,62 @@ const server = http.createServer((req, res) => {
 
                 const newLocationId = locRes.json && (locRes.json.id || (locRes.json.location && locRes.json.location.id));
 
-                // Step 2: Create contact in the agency's main location (for lead tracking)
+                // Step 2: Create user in the new sub-account (triggers GHL welcome/invite email)
+                if (newLocationId) {
+                    const userPayload = {
+                        firstName: form.firstName || '',
+                        lastName: form.lastName || '',
+                        email: form.email || '',
+                        phone: form.phone || '',
+                        type: 'account',
+                        role: 'admin',
+                        locationIds: [newLocationId],
+                        permissions: {
+                            campaignsEnabled: true,
+                            campaignsReadOnly: false,
+                            contactsEnabled: true,
+                            workflowsEnabled: true,
+                            triggersEnabled: true,
+                            funnelsEnabled: true,
+                            websitesEnabled: true,
+                            opportunitiesEnabled: true,
+                            dashboardStatsEnabled: true,
+                            bulkRequestsEnabled: true,
+                            appointmentsEnabled: true,
+                            reviewsEnabled: true,
+                            onlineListingsEnabled: true,
+                            phoneCallEnabled: true,
+                            conversationsEnabled: true,
+                            assignedDataOnly: false,
+                            adwordsReportingEnabled: false,
+                            membershipEnabled: false,
+                            facebookAdsReportingEnabled: false,
+                            attributionsReportingEnabled: false,
+                            settingsEnabled: true,
+                            tagsEnabled: true,
+                            leadValueEnabled: true,
+                            marketingEnabled: true,
+                            agentReportingEnabled: true,
+                            botService: false,
+                            socialPlanner: false,
+                            bloggingEnabled: false,
+                            invoiceEnabled: true,
+                            affiliateManagerEnabled: false,
+                            contentAiEnabled: false,
+                            refundsEnabled: false,
+                            recordPaymentEnabled: true,
+                            cancelSubscriptionEnabled: false,
+                            paymentsEnabled: true,
+                            communitiesEnabled: false,
+                            exportPaymentsEnabled: false
+                        }
+                    };
+
+                    const userRes = await ghlRequest('POST', '/users/', userPayload, GHL_AGENCY_TOKEN);
+                    console.log('GHL user creation response:', userRes.status, userRes.body);
+                }
+
+                // Step 3: Create contact in the agency's main location (for lead tracking)
                 const contactPayload = {
                     locationId: GHL_LOCATION_ID,
                     firstName: form.firstName || '',
@@ -231,7 +286,7 @@ const server = http.createServer((req, res) => {
 
                 const contactId = contactRes.json && contactRes.json.contact && contactRes.json.contact.id;
 
-                // Step 3: Add note with trial info and sub-account reference
+                // Step 4: Add note with trial info and sub-account reference
                 if (contactId) {
                     const noteBody = 'CRM Signup — FREE TRIAL (14 days)\n' +
                         'Sub-Account ID: ' + (newLocationId || 'N/A') + '\n' +
