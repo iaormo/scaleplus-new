@@ -1676,8 +1676,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     align-items: center;
     height: 28px;
     position: relative;
-    margin-left: auto;
-    margin-right: 24px;
+    margin-left: 32px;
     width: 2px;
 }
 
@@ -1967,7 +1966,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .portfolio-card { padding: 28px 20px; }
     .portfolio-stats { flex-direction: row; gap: 6px; }
     .ps-item strong { font-size: 1rem; }
-    .fc-connector { height: 22px; margin-left: auto; margin-right: 18px; width: 2px; }
+    .fc-connector { height: 22px; margin-left: 26px; width: 2px; }
     .fc-node { padding: 8px 10px; gap: 8px; }
     .fc-node-icon { width: 28px; height: 28px; min-width: 28px; }
     .fc-node span { font-size: 0.75rem; }
