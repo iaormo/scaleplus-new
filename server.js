@@ -220,13 +220,34 @@ const server = http.createServer((req, res) => {
                         'Trial Expiry: ' + trialExpiryStr + '\n' +
                         'Business: ' + businessName + '\n' +
                         'Industry: ' + (form.industry || 'N/A') + '\n' +
-                        'Website: ' + (form.website || 'N/A') + '\n\n' +
-                        'ACTION REQUIRED: Create sub-account manually or via n8n.\n' +
-                        'If tag is still "free-trial" (not changed to "subscriber") after ' + trialExpiryStr + ', remove CRM access.';
+                        'Website: ' + (form.website || 'N/A');
                     const noteRes = await ghlRequest('POST', '/contacts/' + contactId + '/notes', {
                         body: noteBody
                     });
                     console.log('GHL note response:', noteRes.status, noteRes.body);
+                }
+
+                // Step 3: Trigger n8n workflow to create GHL sub-account via OAuth2
+                try {
+                    const n8nPayload = JSON.stringify({
+                        name: businessName,
+                        email: form.email || '',
+                        phone: form.phone || '',
+                        firstName: form.firstName || '',
+                        lastName: form.lastName || '',
+                        website: form.website || '',
+                        industry: form.industry || '',
+                        contactId: contactId || ''
+                    });
+                    const n8nReq = https.request('https://automationpapi.up.railway.app/webhook/scaleplus-form-submission', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(n8nPayload) }
+                    });
+                    n8nReq.write(n8nPayload);
+                    n8nReq.end();
+                    console.log('n8n webhook triggered for sub-account creation');
+                } catch (n8nErr) {
+                    console.error('n8n webhook error (non-blocking):', n8nErr.message);
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
