@@ -261,11 +261,8 @@ const server = http.createServer((req, res) => {
             });
             return;
         }
-        // HTML files: no cache. Static assets (css/js/images/fonts): cache 1 day
-        const isHTML = ext === '.html';
-        const cacheHeader = isHTML
-            ? 'no-cache, no-store, must-revalidate'
-            : 'public, max-age=86400, stale-while-revalidate=3600';
+        // No cache in development; for production, set longer cache headers
+        const cacheHeader = 'no-cache, no-store, must-revalidate';
 
         res.writeHead(200, {
             'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',

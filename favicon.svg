@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
-  <text x="8" y="44" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="28" fill="#ffffff">S</text>
-  <text x="28" y="44" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="28" fill="#a855f7">+</text>
+  <g transform="translate(12, 8) scale(0.62)">
+    <path d="M40.28,11.32a4,4,0,0,0-5.66,0L22.24,23.7A32,32,0,0,0,13,47.44V56a8,8,0,0,0,8,8h8.56A32,32,0,0,0,53.3,54.76L65.68,42.38a4,4,0,0,0,0-5.66ZM47,49.12A24,24,0,0,1,29.56,56H21V47.44A24,24,0,0,1,27.88,30L37,20.87,56.13,40Z" fill="#a855f7"/>
+    <circle cx="44" cy="33" r="5" fill="#c084fc"/>
+    <path d="M24,44a4,4,0,0,1-4,4H12a4,4,0,0,1,0-8h8A4,4,0,0,1,24,44Z" fill="#a855f7" opacity="0.6"/>
+    <path d="M20,52a4,4,0,0,1-4,4H8a4,4,0,0,1,0-8h8A4,4,0,0,1,20,52Z" fill="#a855f7" opacity="0.4"/>
+  </g>
 </svg>

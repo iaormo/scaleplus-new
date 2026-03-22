@@ -1625,17 +1625,9 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 
 .fc-node:hover span { color: var(--text-primary); }
 
-/* Trigger node pulse ring */
+/* Trigger node pulse ring — hidden */
 .fc-pulse {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--purple);
-    transform: translateY(-50%);
-    animation: fcPulse 2s ease-in-out infinite;
+    display: none;
 }
 
 [data-niche="beauty"] .fc-pulse { background: #db7093; }
@@ -1684,7 +1676,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     align-items: center;
     height: 28px;
     position: relative;
-    margin-left: 32px;
+    margin-left: auto;
+    margin-right: 24px;
     width: 2px;
 }
 
@@ -1974,7 +1967,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .portfolio-card { padding: 28px 20px; }
     .portfolio-stats { flex-direction: row; gap: 6px; }
     .ps-item strong { font-size: 1rem; }
-    .fc-connector { height: 22px; margin-left: 26px; width: 2px; }
+    .fc-connector { height: 22px; margin-left: auto; margin-right: 18px; width: 2px; }
     .fc-node { padding: 8px 10px; gap: 8px; }
     .fc-node-icon { width: 28px; height: 28px; min-width: 28px; }
     .fc-node span { font-size: 0.75rem; }
