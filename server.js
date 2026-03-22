@@ -17,6 +17,7 @@ const GHL_BASE = 'https://services.leadconnectorhq.com';
 const GHL_TOKEN = process.env.GHL_TOKEN || '';
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || '';
 const GHL_AGENCY_TOKEN = process.env.GHL_AGENCY_TOKEN || '';
+const GHL_COMPANY_ID = process.env.GHL_COMPANY_ID || '';
 
 const MIME_TYPES = {
     '.html': 'text/html',
@@ -189,7 +190,7 @@ const server = http.createServer((req, res) => {
                 // Step 1: Create sub-account (location) via Agency API
                 const businessName = form.business || ((form.firstName || '') + ' ' + (form.lastName || '')).trim() + ' Business';
                 const locationPayload = {
-                    companyId: GHL_LOCATION_ID,
+                    companyId: GHL_COMPANY_ID,
                     name: businessName,
                     email: form.email || '',
                     phone: form.phone || '',
