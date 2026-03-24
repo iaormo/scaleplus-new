@@ -245,7 +245,7 @@ const server = http.createServer((req, res) => {
                         contactId: contactId || ''
                     });
                     const n8nReq = https.request({
-                        hostname: 'automationpapi.up.railway.app',
+                        hostname: 'webhook-processor-production-51f9.up.railway.app',
                         path: '/webhook/scaleplus-form-submission',
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(n8nPayload) }
