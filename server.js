@@ -190,6 +190,10 @@ const server = http.createServer((req, res) => {
                 const businessName = form.business || ((form.firstName || '') + ' ' + (form.lastName || '')).trim() + ' Business';
 
                 // Step 1: Create contact in main location with trial tags
+                console.log('=== CRM SIGNUP START ===');
+                console.log('GHL_TOKEN set:', GHL_TOKEN ? 'YES (' + GHL_TOKEN.substring(0, 15) + '...)' : 'MISSING');
+                console.log('GHL_LOCATION_ID:', GHL_LOCATION_ID || 'MISSING');
+
                 const contactPayload = {
                     locationId: GHL_LOCATION_ID,
                     firstName: form.firstName || '',
@@ -201,6 +205,7 @@ const server = http.createServer((req, res) => {
                     tags: ['crm-signup', 'free-trial', form.industry || 'unknown-industry'],
                     source: 'ScalePlus CRM Signup Page'
                 };
+                console.log('Contact payload:', JSON.stringify(contactPayload));
 
                 const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload);
                 console.log('GHL CRM signup contact response:', contactRes.status, contactRes.body);
@@ -227,7 +232,7 @@ const server = http.createServer((req, res) => {
                     console.log('GHL note response:', noteRes.status, noteRes.body);
                 }
 
-                // Step 3: Trigger n8n workflow to create GHL sub-account via OAuth2
+                // Step 3: Trigger n8n webhook to create GHL sub-account via OAuth2
                 try {
                     const n8nPayload = JSON.stringify({
                         name: businessName,
@@ -239,10 +244,19 @@ const server = http.createServer((req, res) => {
                         industry: form.industry || '',
                         contactId: contactId || ''
                     });
-                    const n8nReq = https.request('https://automationpapi.up.railway.app/webhook/scaleplus-form-submission', {
+                    const n8nReq = https.request({
+                        hostname: 'automationpapi.up.railway.app',
+                        path: '/webhook/scaleplus-form-submission',
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(n8nPayload) }
+                    }, (n8nRes) => {
+                        let n8nBody = '';
+                        n8nRes.on('data', chunk => n8nBody += chunk);
+                        n8nRes.on('end', () => {
+                            console.log('n8n webhook response:', n8nRes.statusCode, n8nBody);
+                        });
                     });
+                    n8nReq.on('error', (e) => console.error('n8n webhook error:', e.message));
                     n8nReq.write(n8nPayload);
                     n8nReq.end();
                     console.log('n8n webhook triggered for sub-account creation');
