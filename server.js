@@ -232,36 +232,55 @@ const server = http.createServer((req, res) => {
                     console.log('GHL note response:', noteRes.status, noteRes.body);
                 }
 
-                // Step 3: Trigger n8n webhook to create GHL sub-account via OAuth2
+                // Step 3: Send email notification to admin
                 try {
-                    const n8nPayload = JSON.stringify({
-                        name: businessName,
-                        email: form.email || '',
-                        phone: form.phone || '',
-                        firstName: form.firstName || '',
-                        lastName: form.lastName || '',
-                        website: form.website || '',
-                        industry: form.industry || '',
-                        contactId: contactId || ''
+                    const emailBody = JSON.stringify({
+                        locationId: GHL_LOCATION_ID,
+                        contactId: contactId,
+                        type: 'Email',
+                        emailTo: 'ian@scaleplus.io',
+                        subject: 'New CRM Trial Signup — ' + businessName,
+                        body: '<h2>New CRM Signup</h2>' +
+                            '<p><strong>Business:</strong> ' + businessName + '</p>' +
+                            '<p><strong>Name:</strong> ' + (form.firstName || '') + ' ' + (form.lastName || '') + '</p>' +
+                            '<p><strong>Email:</strong> ' + (form.email || '') + '</p>' +
+                            '<p><strong>Phone:</strong> ' + (form.phone || '') + '</p>' +
+                            '<p><strong>Industry:</strong> ' + (form.industry || 'N/A') + '</p>' +
+                            '<p><strong>Website:</strong> ' + (form.website || 'N/A') + '</p>' +
+                            '<p><strong>Trial Expiry:</strong> ' + trialExpiryStr + '</p>' +
+                            '<hr><p><strong>ACTION:</strong> Create a sub-account in GHL for this customer and send them their login credentials.</p>',
+                        html: '<h2>New CRM Signup</h2>' +
+                            '<p><strong>Business:</strong> ' + businessName + '</p>' +
+                            '<p><strong>Name:</strong> ' + (form.firstName || '') + ' ' + (form.lastName || '') + '</p>' +
+                            '<p><strong>Email:</strong> ' + (form.email || '') + '</p>' +
+                            '<p><strong>Phone:</strong> ' + (form.phone || '') + '</p>' +
+                            '<p><strong>Industry:</strong> ' + (form.industry || 'N/A') + '</p>' +
+                            '<p><strong>Website:</strong> ' + (form.website || 'N/A') + '</p>' +
+                            '<p><strong>Trial Expiry:</strong> ' + trialExpiryStr + '</p>' +
+                            '<hr><p><strong>ACTION:</strong> Create a sub-account in GHL for this customer and send them their login credentials.</p>'
                     });
-                    const n8nReq = https.request({
-                        hostname: 'webhook-processor-production-51f9.up.railway.app',
-                        path: '/webhook/scaleplus-form-submission',
+                    const emailReq = https.request({
+                        hostname: 'services.leadconnectorhq.com',
+                        path: '/conversations/messages',
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(n8nPayload) }
-                    }, (n8nRes) => {
-                        let n8nBody = '';
-                        n8nRes.on('data', chunk => n8nBody += chunk);
-                        n8nRes.on('end', () => {
-                            console.log('n8n webhook response:', n8nRes.statusCode, n8nBody);
-                        });
+                        headers: {
+                            'Authorization': 'Bearer ' + GHL_TOKEN,
+                            'Content-Type': 'application/json',
+                            'Version': '2021-07-28',
+                            'Accept': 'application/json',
+                            'Content-Length': Buffer.byteLength(emailBody)
+                        }
+                    }, (emailRes) => {
+                        let eBody = '';
+                        emailRes.on('data', chunk => eBody += chunk);
+                        emailRes.on('end', () => console.log('Email notification response:', emailRes.statusCode, eBody));
                     });
-                    n8nReq.on('error', (e) => console.error('n8n webhook error:', e.message));
-                    n8nReq.write(n8nPayload);
-                    n8nReq.end();
-                    console.log('n8n webhook triggered for sub-account creation');
-                } catch (n8nErr) {
-                    console.error('n8n webhook error (non-blocking):', n8nErr.message);
+                    emailReq.on('error', (e) => console.error('Email notification error:', e.message));
+                    emailReq.write(emailBody);
+                    emailReq.end();
+                    console.log('Email notification triggered for ian@scaleplus.io');
+                } catch (emailErr) {
+                    console.error('Email notification error (non-blocking):', emailErr.message);
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
