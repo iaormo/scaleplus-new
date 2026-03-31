@@ -211,7 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '.service-card', '.process-step', '.result-card',
         '.testimonial-card', '.faq-item', '.about-content',
         '.about-visual', '.contact-info', '.contact-form',
-        '.section-header', '.cta-box', '.portfolio-card'
+        '.section-header', '.cta-box', '.portfolio-card',
+        '.roi-inputs', '.roi-result-card', '.roi-payback'
     ];
 
     revealSelectors.forEach(sel => {
@@ -236,6 +237,38 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Fallback: show everything immediately
         document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+
+    // --- Card Tilt Effect (lightweight, GPU-accelerated) ---
+    document.querySelectorAll('.service-card, .result-card, .pricing-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.style.transform = `perspective(600px) rotateY(${x * 6}deg) rotateX(${y * -6}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+
+    // --- Parallax Sections (subtle background shift on scroll) ---
+    const parallaxEls = document.querySelectorAll('.hero-orb, .about-orb, .cta-orb');
+    if (parallaxEls.length) {
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const sy = window.scrollY;
+                    parallaxEls.forEach(el => {
+                        const speed = 0.03;
+                        el.style.transform = `translateY(${sy * speed}px)`;
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     }
 
     // --- Contact Form → GoHighLevel ---
@@ -452,29 +485,196 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', animateFlowcharts, { passive: true });
     animateFlowcharts();
 
-    // --- Geo-based currency (PHP for Philippines, USD everywhere else) ---
-    (async function detectCurrency() {
-        const priceEls = document.querySelectorAll('.price-amount[data-usd]');
-        if (!priceEls.length) return;
-        let isPH = false;
-        try {
-            const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
-            const data = await resp.json();
-            isPH = data.country_code === 'PH';
-        } catch (e) { /* default to USD */ }
-        priceEls.forEach(el => {
-            const usd = parseInt(el.dataset.usd);
-            const php = parseInt(el.dataset.php);
-            const currencyEl = el.querySelector('.price-currency');
-            const valueEl = el.querySelector('.price-value');
-            if (isPH) {
-                if (currencyEl) currencyEl.textContent = '\u20B1';
-                if (valueEl) valueEl.textContent = php.toLocaleString();
-                if (!valueEl && usd === 0) { /* free stays 0 */ }
+    // --- Pricing (USD only) ---
+    document.querySelectorAll('.price-amount[data-usd]').forEach(el => {
+        const usd = parseInt(el.dataset.usd);
+        const currencyEl = el.querySelector('.price-currency');
+        const valueEl = el.querySelector('.price-value');
+        if (currencyEl) currencyEl.textContent = '$';
+        if (valueEl) valueEl.textContent = usd.toLocaleString();
+    });
+
+    // --- Testimonials Stack ---
+    (function initTestimonialStack() {
+        const stack = document.getElementById('testimonialsStack');
+        if (!stack) return;
+        const cards = Array.from(stack.querySelectorAll('.testimonial-card'));
+        const dots = document.querySelectorAll('.tst-dot');
+        const prevBtn = document.getElementById('tstPrev');
+        const nextBtn = document.getElementById('tstNext');
+        const total = cards.length;
+        let current = 0;
+        let startX = 0;
+        let deltaX = 0;
+        let dragging = false;
+        let autoTimer;
+
+        function arrange() {
+            cards.forEach((card, i) => {
+                const pos = (i - current + total) % total;
+                card.setAttribute('data-pos', pos);
+                card.classList.remove('swiping');
+                card.style.transform = '';
+            });
+            dots.forEach((d, i) => d.classList.toggle('active', i === current));
+            const h = cards[current].offsetHeight + 50;
+            stack.style.height = h + 'px';
+        }
+
+        function goTo(idx) {
+            current = ((idx % total) + total) % total;
+            arrange();
+        }
+        function next() { goTo(current + 1); }
+        function prev() { goTo(current - 1); }
+
+        function resetAuto() {
+            clearInterval(autoTimer);
+            autoTimer = setInterval(next, 6000);
+        }
+
+        prevBtn.addEventListener('click', () => { prev(); resetAuto(); });
+        nextBtn.addEventListener('click', () => { next(); resetAuto(); });
+        dots.forEach(d => d.addEventListener('click', () => {
+            goTo(parseInt(d.dataset.slide));
+            resetAuto();
+        }));
+
+        const front = () => cards.find(c => c.getAttribute('data-pos') === '0');
+
+        stack.addEventListener('pointerdown', e => {
+            const card = front();
+            if (!card || !card.contains(e.target)) return;
+            if (e.target.closest('a')) return;
+            dragging = true;
+            startX = e.clientX;
+            deltaX = 0;
+            card.classList.add('swiping');
+            card.setPointerCapture(e.pointerId);
+        });
+
+        stack.addEventListener('pointermove', e => {
+            if (!dragging) return;
+            deltaX = e.clientX - startX;
+            const card = front();
+            if (card) card.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.04}deg)`;
+        });
+
+        stack.addEventListener('pointerup', () => {
+            if (!dragging) return;
+            dragging = false;
+            const card = front();
+            if (card) card.classList.remove('swiping');
+            if (Math.abs(deltaX) > 60) {
+                deltaX > 0 ? prev() : next();
+                resetAuto();
             } else {
-                if (currencyEl) currencyEl.textContent = '$';
-                if (valueEl) valueEl.textContent = usd.toLocaleString();
+                arrange();
             }
         });
+
+        arrange();
+        resetAuto();
+    })();
+
+    // --- ROI Calculator ---
+    (function initROICalc() {
+        const sliders = {
+            employees:  document.getElementById('roiEmployees'),
+            rate:       document.getElementById('roiHourlyRate'),
+            hours:      document.getElementById('roiHoursWasted'),
+            investment: document.getElementById('roiInvestment')
+        };
+        if (!sliders.employees) return;
+
+        const vals = {
+            employees:  document.getElementById('roiEmployeesVal'),
+            rate:       document.getElementById('roiHourlyRateVal'),
+            hours:      document.getElementById('roiHoursWastedVal'),
+            investment: document.getElementById('roiInvestmentVal')
+        };
+        const out = {
+            hoursSaved:      document.getElementById('roiHoursSaved'),
+            monthlySavings:  document.getElementById('roiMonthlySavings'),
+            annualSavings:   document.getElementById('roiAnnualSavings'),
+            roi:             document.getElementById('roiROI'),
+            payback:         document.getElementById('roiPayback')
+        };
+
+        const fmt = n => n.toLocaleString('en-US');
+        const fmtUSD = n => '$' + fmt(Math.round(n));
+
+        function paintSlider(slider) {
+            const pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(90deg, var(--purple-dark) ${pct}%, var(--border-subtle) ${pct}%)`;
+        }
+
+        function animateNumber(el, target, prefix, suffix) {
+            const current = parseInt(el.textContent.replace(/[^0-9.-]/g, '')) || 0;
+            if (current === target) return;
+            const diff = target - current;
+            const steps = 12;
+            let step = 0;
+            const tick = () => {
+                step++;
+                const progress = step / steps;
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const val = Math.round(current + diff * eased);
+                el.textContent = (prefix || '') + fmt(val) + (suffix || '');
+                if (step < steps) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }
+
+        function calc() {
+            const e = parseInt(sliders.employees.value);
+            const r = parseInt(sliders.rate.value);
+            const h = parseInt(sliders.hours.value);
+            const inv = parseInt(sliders.investment.value);
+
+            vals.employees.textContent = e;
+            vals.rate.textContent = '$' + r;
+            vals.hours.textContent = h;
+            vals.investment.textContent = fmtUSD(inv);
+
+            Object.values(sliders).forEach(paintSlider);
+
+            const automationRate = 0.7;
+            const hoursSavedWeekly = e * h * automationRate;
+            const hoursSavedMonthly = Math.round(hoursSavedWeekly * 4.33);
+            const monthlySavings = Math.round(hoursSavedWeekly * r * 4.33);
+            const annualSavings = monthlySavings * 12;
+            const roi = Math.round((annualSavings - inv) / inv * 100);
+            const paybackMonths = inv / monthlySavings;
+
+            animateNumber(out.hoursSaved, hoursSavedMonthly, '', '');
+            animateNumber(out.monthlySavings, monthlySavings, '$', '');
+            animateNumber(out.annualSavings, annualSavings, '$', '');
+
+            const roiEl = out.roi;
+            const roiTarget = roi;
+            const roiCurrent = parseInt(roiEl.textContent.replace(/[^0-9.-]/g, '')) || 0;
+            const roiDiff = roiTarget - roiCurrent;
+            let rs = 0;
+            const roiTick = () => {
+                rs++;
+                const p = 1 - Math.pow(1 - rs / 12, 3);
+                roiEl.textContent = fmt(Math.round(roiCurrent + roiDiff * p)) + '%';
+                if (rs < 12) requestAnimationFrame(roiTick);
+            };
+            requestAnimationFrame(roiTick);
+
+            if (paybackMonths < 1) {
+                out.payback.textContent = '~' + Math.round(paybackMonths * 30) + ' days';
+            } else {
+                out.payback.textContent = '~' + paybackMonths.toFixed(1) + ' months';
+            }
+        }
+
+        Object.values(sliders).forEach(s => {
+            s.addEventListener('input', calc);
+            paintSlider(s);
+        });
+        calc();
     })();
 });
