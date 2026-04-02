@@ -1,6 +1,6 @@
 /**
- * Renders blog listing-style Open Graph images (1200×630 PNG) from blog-og.json.
- * Matches on-site card: top accent bar, category pill, date, title, excerpt, Read Article →
+ * Renders blog-style Open Graph images (1200×630 PNG) from blog-og.json.
+ * Uses bundled Inter + JetBrains Mono so resvg renders reliably on Linux (not system-ui stacks).
  */
 const fs = require('fs');
 const path = require('path');
@@ -32,32 +32,40 @@ function escapeXml(s) {
 }
 
 function wrapLines(text, maxChars, maxLines) {
-    const words = String(text).split(/\s+/).filter(Boolean);
+    const words = String(text).trim().split(/\s+/).filter(Boolean);
     const lines = [];
     let cur = '';
     for (const w of words) {
-        const piece = w.length > maxChars ? w.slice(0, maxChars - 1) + '…' : w;
-        const next = cur ? cur + ' ' + piece : piece;
-        if (next.length <= maxChars) {
-            cur = next;
+        const word = w.length > maxChars ? w.slice(0, Math.max(1, maxChars - 1)) + '…' : w;
+        const trial = cur ? cur + ' ' + word : word;
+        if (trial.length <= maxChars) {
+            cur = trial;
         } else {
-            if (cur) lines.push(cur);
-            if (lines.length >= maxLines) break;
-            cur = piece;
+            if (cur) {
+                lines.push(cur);
+                if (lines.length >= maxLines) return lines;
+            }
+            cur = word.length > maxChars ? word.slice(0, Math.max(1, maxChars - 1)) + '…' : word;
         }
     }
     if (cur && lines.length < maxLines) lines.push(cur);
-    if (lines.length > maxLines) lines.length = maxLines;
-    if (words.length && lines.length === maxLines) {
-        const joined = lines.join(' ');
-        if (joined.length < text.replace(/\s+/g, ' ').trim().length - 2) {
-            let last = lines[maxLines - 1];
-            if (last.length > maxChars - 1) last = last.slice(0, maxChars - 3);
-            if (!last.endsWith('…')) last += '…';
-            lines[maxLines - 1] = last;
-        }
+    return lines.slice(0, maxLines);
+}
+
+function getOgFontFiles() {
+    try {
+        const interRoot = path.dirname(require.resolve('@fontsource/inter/package.json'));
+        const jbRoot = path.dirname(require.resolve('@fontsource/jetbrains-mono/package.json'));
+        return [
+            path.join(interRoot, 'files/inter-latin-400-normal.woff2'),
+            path.join(interRoot, 'files/inter-latin-600-normal.woff2'),
+            path.join(interRoot, 'files/inter-latin-700-normal.woff2'),
+            path.join(jbRoot, 'files/jetbrains-mono-latin-400-normal.woff2'),
+            path.join(jbRoot, 'files/jetbrains-mono-latin-500-normal.woff2')
+        ].filter((p) => fs.existsSync(p));
+    } catch (e) {
+        return [];
     }
-    return lines;
 }
 
 function getPost(slug) {
@@ -76,53 +84,68 @@ function getPost(slug) {
 function buildSvg(post) {
     const W = 1200;
     const H = 630;
+    const padX = 72;
     const accent = post.accent;
+
+    const tLen = post.title.length;
+    let titleFont = 40;
+    let titleMaxChars = 36;
+    if (tLen > 85) {
+        titleFont = 34;
+        titleMaxChars = 42;
+    }
+    if (tLen > 120) {
+        titleFont = 30;
+        titleMaxChars = 48;
+    }
+    if (tLen > 160) {
+        titleFont = 26;
+        titleMaxChars = 54;
+    }
+
+    const titleLines = wrapLines(post.title, titleMaxChars, 4);
+    const descLines = wrapLines(post.description, 76, 3);
+
     const cat = escapeXml(post.category);
     const dateStr = escapeXml(post.dateDisplay);
-    const titleLines = wrapLines(post.title, 36, 4);
-    const descLines = wrapLines(post.description, 82, 3);
+    const pillPadX = 16;
+    const pillH = 40;
+    const pillY = 96;
+    const pillX = padX;
+    const catCharW = 8.2;
+    const pillW = Math.ceil(post.category.length * catCharW + pillPadX * 2);
+    const pillR = pillH / 2;
+    const metaMidY = pillY + pillH / 2;
+    const dateX = pillX + pillW + 20;
 
-    const pillPadX = 14;
-    const catTextW = Math.max(post.category.length * 7.8 + pillPadX * 2, 88);
-    const pillX = 52;
-    const pillY = 54;
-    const pillH = 34;
-    const pillR = 17;
-    const dateX = pillX + catTextW + 20;
-
-    let titleY = 138;
-    const titleLineH = 46;
+    const titleLineGap = Math.round(titleFont * 1.2);
+    let titleTop = pillY + pillH + 36;
     const titleBlocks = titleLines.map((line, i) => {
-        const y = titleY + i * titleLineH;
-        return `<text x="52" y="${y}" fill="#f5f5f5" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="38" font-weight="700" letter-spacing="-0.02em">${escapeXml(line)}</text>`;
-    }).join('\n');
+        const y = titleTop + i * titleLineGap;
+        return `<text x="${padX}" y="${y}" fill="#f5f5f5" font-family="Inter" font-size="${titleFont}" font-weight="700" dominant-baseline="hanging">${escapeXml(line)}</text>`;
+    }).join('\n  ');
 
-    const descStartY = titleY + titleLines.length * titleLineH + 28;
-    const descLineH = 32;
+    const descTop = titleTop + titleLines.length * titleLineGap + 28;
+    const descFont = 21;
+    const descLineGap = Math.round(descFont * 1.35);
     const descBlocks = descLines.map((line, i) => {
-        const y = descStartY + i * descLineH;
-        return `<text x="52" y="${y}" fill="#a3a3a3" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="400">${escapeXml(line)}</text>`;
-    }).join('\n');
+        const y = descTop + i * descLineGap;
+        return `<text x="${padX}" y="${y}" fill="#a1a1aa" font-family="Inter" font-size="${descFont}" font-weight="400" dominant-baseline="hanging">${escapeXml(line)}</text>`;
+    }).join('\n  ');
 
-    const readMoreY = Math.min(H - 48, descStartY + descLines.length * descLineH + 44);
+    const footerY = Math.min(H - 40, descTop + descLines.length * descLineGap + 36);
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs>
-    <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#0d0d0d"/>
-      <stop offset="100%" stop-color="#050505"/>
-    </linearGradient>
-  </defs>
-  <rect width="${W}" height="${H}" fill="#000000"/>
-  <rect x="36" y="28" width="${W - 72}" height="${H - 56}" rx="22" ry="22" fill="url(#cardBg)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-  <rect x="36" y="28" width="${W - 72}" height="4" rx="2" fill="${accent}"/>
-  <rect x="${pillX}" y="${pillY}" width="${catTextW}" height="${pillH}" rx="${pillR}" fill="rgba(168,85,247,0.14)" stroke="rgba(168,85,247,0.45)" stroke-width="1"/>
-  <text x="${pillX + pillPadX}" y="${pillY + 23}" fill="#c084fc" font-family="ui-monospace, 'Cascadia Code', 'Consolas', monospace" font-size="12" font-weight="600" letter-spacing="0.12em">${cat}</text>
-  <text x="${dateX}" y="${pillY + 23}" fill="#737373" font-family="ui-monospace, 'Cascadia Code', 'Consolas', monospace" font-size="13" font-weight="400">${dateStr}</text>
+  <rect width="${W}" height="${H}" fill="#050505"/>
+  <rect x="0" y="0" width="${W}" height="10" fill="${accent}"/>
+  <rect x="40" y="40" width="${W - 80}" height="${H - 80}" rx="20" ry="20" fill="#0a0a0a" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+  <rect x="${pillX}" y="${pillY}" width="${pillW}" height="${pillH}" rx="${pillR}" ry="${pillR}" fill="rgba(168,85,247,0.16)" stroke="rgba(168,85,247,0.5)" stroke-width="1"/>
+  <text x="${pillX + pillPadX}" y="${metaMidY}" fill="#e9d5ff" font-family="JetBrains Mono" font-size="12" font-weight="500" letter-spacing="0.14em" dominant-baseline="middle">${cat}</text>
+  <text x="${dateX}" y="${metaMidY}" fill="#737373" font-family="JetBrains Mono" font-size="13" font-weight="400" dominant-baseline="middle">${dateStr}</text>
   ${titleBlocks}
   ${descBlocks}
-  <text x="52" y="${readMoreY}" fill="#a855f7" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600">Read Article →</text>
+  <text x="${padX}" y="${footerY}" fill="#c084fc" font-family="Inter" font-size="18" font-weight="600" dominant-baseline="middle">Read article &#8594;</text>
 </svg>`;
 }
 
@@ -130,8 +153,22 @@ function renderBlogOgPng(slug) {
     const post = getPost(slug);
     if (!post || !Resvg) return null;
     const svg = buildSvg(post);
+    const fontFiles = getOgFontFiles();
+    const font = {
+        loadSystemFonts: true,
+        defaultFontFamily: 'Inter',
+        sansSerifFamily: 'Inter',
+        monospaceFamily: 'JetBrains Mono'
+    };
+    if (fontFiles.length) {
+        font.fontFiles = fontFiles;
+    }
     try {
         const resvg = new Resvg(svg, {
+            font,
+            textRendering: 2,
+            shapeRendering: 2,
+            dpi: 144,
             fitTo: { mode: 'width', value: 1200 }
         });
         return resvg.render().asPng();
