@@ -9,6 +9,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@phosphor-icons/core": "^2.1.1"
+    "@phosphor-icons/core": "^2.1.1",
+    "@resvg/resvg-js": "^2.6.2"
   }
 }

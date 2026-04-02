@@ -294,6 +294,40 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // --- Dynamic OG card PNG (blog share previews) ---
+    const siteOrigin = process.env.PUBLIC_SITE_URL || 'https://scaleplus.io';
+    const host = req.headers.host || 'localhost';
+    const forwardedProto = req.headers['x-forwarded-proto'];
+    const proto = forwardedProto === 'https' || forwardedProto === 'http' ? forwardedProto : 'http';
+
+    let parsedUrl;
+    try {
+        parsedUrl = new URL(req.url, `${proto}://${host}`);
+    } catch (e) {
+        parsedUrl = null;
+    }
+
+    if (parsedUrl && req.method === 'GET' && parsedUrl.pathname === '/og/blog-card.png') {
+        const ogBlog = require('./og-blog-card');
+        const slug = parsedUrl.searchParams.get('slug') || '';
+        let buf = slug ? ogBlog.renderBlogOgPng(slug) : null;
+        if (!buf) {
+            const fp = ogBlog.getFallbackPngPath();
+            if (fp) buf = fs.readFileSync(fp);
+        }
+        if (buf) {
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Cache-Control': 'public, max-age=86400'
+            });
+            res.end(buf);
+            return;
+        }
+        res.writeHead(404);
+        res.end('Not found');
+        return;
+    }
+
     // --- Static files ---
     let filePath = req.url === '/' ? '/index.html' : req.url;
     filePath = filePath.split('?')[0];
@@ -307,6 +341,27 @@ const server = http.createServer((req, res) => {
     if (filePath === '/terms') filePath = '/terms.html';
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
+
+    if (parsedUrl && req.method === 'GET' && filePath === '/blog-post.html') {
+        const slug = parsedUrl.searchParams.get('slug');
+        fs.readFile(fullPath, (err, data) => {
+            if (err) {
+                res.writeHead(500);
+                res.end('Server Error');
+                return;
+            }
+            const ogBlog = require('./og-blog-card');
+            const html = ogBlog.injectBlogPostHtml(data.toString('utf8'), slug, siteOrigin);
+            res.writeHead(200, {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            });
+            res.end(html);
+        });
+        return;
+    }
 
     fs.readFile(fullPath, (err, data) => {
         if (err) {
