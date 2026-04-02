@@ -1968,16 +1968,24 @@ textarea.form-input { resize: vertical; min-height: 120px; }
    ============================================ */
 .pricing { padding: 100px 0; }
 
+.pricing .container {
+    max-width: 1400px;
+}
+
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 2.5vw, 32px);
     margin-top: 48px;
+    width: 100%;
+    align-items: stretch;
 }
 
 /* Dynamic card wrapper */
 .pricing-dynamic {
     position: relative;
+    min-width: 0;
+    height: 100%;
     border-radius: var(--radius-lg);
     padding: 1px;
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(255, 255, 255, 0.05), rgba(168, 85, 247, 0.2));
@@ -2022,7 +2030,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 .pricing-card-inner {
     background: var(--bg-card);
     border-radius: calc(var(--radius-lg) - 1px);
-    padding: 28px 20px;
+    padding: clamp(24px, 2.5vw, 32px) clamp(18px, 2vw, 28px);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -2203,7 +2211,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .services-grid { grid-template-columns: repeat(2, 1fr); }
     .process-timeline { grid-template-columns: repeat(2, 1fr); }
     .results-grid { grid-template-columns: repeat(2, 1fr); }
-    .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+    .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
     .testimonials-stack { max-width: 520px; }
     .blog-preview-grid { grid-template-columns: repeat(2, 1fr); }
     .portfolio { padding: 80px 0; }
@@ -2281,9 +2289,13 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     .services-grid,
     .process-timeline,
     .results-grid,
-    .pricing-grid,
     .portfolio-grid,
     .blog-preview-grid { grid-template-columns: 1fr; gap: 16px; }
+
+    .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
     .blog-preview { padding: 60px 0; }
     .portfolio { padding: 60px 0; }
     .portfolio .container { padding: 0 16px; }
@@ -2346,6 +2358,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 
     .rocket-divider { height: 48px; }
     .rocket-ship svg { width: 28px; height: 28px; }
+
+    .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
 
     .contact-form input,
     .contact-form select,
