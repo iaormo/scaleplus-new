@@ -52,7 +52,12 @@ function wrapLines(text, maxChars, maxLines) {
     return lines.slice(0, maxLines);
 }
 
-function getOgFontFiles() {
+/** Vendored WOFF2 under assets/ so production (Docker, slim deploys) always has fonts without relying on node_modules layout. */
+function getVendoredOgFontDir() {
+    return path.resolve(__dirname, 'assets', 'og-fonts');
+}
+
+function getOgFontFilesFromNpm() {
     try {
         const interRoot = path.dirname(require.resolve('@fontsource/inter/package.json'));
         const jbRoot = path.dirname(require.resolve('@fontsource/jetbrains-mono/package.json'));
@@ -60,6 +65,9 @@ function getOgFontFiles() {
             path.join(interRoot, 'files/inter-latin-400-normal.woff2'),
             path.join(interRoot, 'files/inter-latin-600-normal.woff2'),
             path.join(interRoot, 'files/inter-latin-700-normal.woff2'),
+            path.join(interRoot, 'files/inter-latin-ext-400-normal.woff2'),
+            path.join(interRoot, 'files/inter-latin-ext-600-normal.woff2'),
+            path.join(interRoot, 'files/inter-latin-ext-700-normal.woff2'),
             path.join(jbRoot, 'files/jetbrains-mono-latin-400-normal.woff2'),
             path.join(jbRoot, 'files/jetbrains-mono-latin-500-normal.woff2')
         ].filter((p) => fs.existsSync(p));
@@ -153,22 +161,32 @@ function renderBlogOgPng(slug) {
     const post = getPost(slug);
     if (!post || !Resvg) return null;
     const svg = buildSvg(post);
-    const fontFiles = getOgFontFiles();
+    const vendoredDir = getVendoredOgFontDir();
+    const vendoredOk = fs.existsSync(path.join(vendoredDir, 'inter-latin-400-normal.woff2'));
     const font = {
-        loadSystemFonts: true,
+        // Prefer bundled fonts only: Linux hosts often have no Inter/Mono system fonts, so system fallback draws nothing.
+        loadSystemFonts: false,
         defaultFontFamily: 'Inter',
         sansSerifFamily: 'Inter',
         monospaceFamily: 'JetBrains Mono'
     };
-    if (fontFiles.length) {
-        font.fontFiles = fontFiles;
+    if (vendoredOk) {
+        font.fontDirs = [vendoredDir];
+    } else {
+        const fontFiles = getOgFontFilesFromNpm();
+        if (fontFiles.length) {
+            font.fontFiles = fontFiles;
+        } else {
+            font.loadSystemFonts = true;
+            console.warn('og-blog-card: no vendored or npm fonts found; falling back to system fonts (OG text may be blank).');
+        }
     }
     try {
         const resvg = new Resvg(svg, {
             font,
             textRendering: 2,
             shapeRendering: 2,
-            dpi: 144,
+            dpi: 96,
             fitTo: { mode: 'width', value: 1200 }
         });
         return resvg.render().asPng();

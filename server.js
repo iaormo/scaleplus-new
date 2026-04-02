@@ -339,6 +339,7 @@ const server = http.createServer((req, res) => {
     if (filePath === '/blog-post') filePath = '/blog-post.html';
     if (filePath === '/privacy') filePath = '/privacy.html';
     if (filePath === '/terms') filePath = '/terms.html';
+    if (filePath === '/404') filePath = '/404.html';
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
 
@@ -365,20 +366,30 @@ const server = http.createServer((req, res) => {
 
     fs.readFile(fullPath, (err, data) => {
         if (err) {
-            fs.readFile(path.join(__dirname, 'index.html'), (err2, fallback) => {
-                if (err2) {
-                    res.writeHead(500);
-                    res.end('Server Error');
-                    return;
-                }
-                res.writeHead(200, {
-                    'Content-Type': 'text/html',
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
+            const accept = (req.headers.accept || '').toLowerCase();
+            const isDocumentRequest =
+                ext === '.html' ||
+                ext === '' ||
+                accept.includes('text/html');
+            if (isDocumentRequest) {
+                fs.readFile(path.join(__dirname, '404.html'), (err404, page404) => {
+                    if (err404 || !page404) {
+                        res.writeHead(500);
+                        res.end('Server Error');
+                        return;
+                    }
+                    res.writeHead(404, {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    });
+                    res.end(page404);
                 });
-                res.end(fallback);
-            });
+                return;
+            }
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Not found');
             return;
         }
         // No cache in development; for production, set longer cache headers

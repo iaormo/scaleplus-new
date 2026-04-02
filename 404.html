@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- 404 layout: community-style centered message + aurora mesh (aligned with patterns from 21st.dev 404 / aurora hero components) -->
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NX8JH74L');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>404 — Page Not Found | ScalePlus</title>
+    <meta name="description" content="This page does not exist. Return to ScalePlus home or explore our blog and services.">
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css?v=4">
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NX8JH74L"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="nav-logo" aria-label="ScalePlus Home">
+                <img src="/logo.png" alt="ScalePlus" class="nav-logo-img">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/crm">CRM</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/#contact" class="nav-cta">Contact Us</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="error-page" id="main">
+        <div class="hero-bg" aria-hidden="true">
+            <div class="hero-grid"></div>
+            <div class="hero-aurora"></div>
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-ring hero-ring-1"></div>
+            <div class="hero-ring hero-ring-2"></div>
+        </div>
+        <div class="error-aurora-mesh" aria-hidden="true">
+            <div class="error-aurora-blob error-aurora-blob-1"></div>
+            <div class="error-aurora-blob error-aurora-blob-2"></div>
+            <div class="error-aurora-blob error-aurora-blob-3"></div>
+            <div class="error-aurora-blob error-aurora-blob-4"></div>
+        </div>
+        <div class="error-page-inner">
+            <span class="error-tag">Error 404</span>
+            <p class="error-code" aria-hidden="true">404</p>
+            <h1>Signal lost in the nebula</h1>
+            <p class="error-lead">This URL is not on our map. The page may have moved, or the link could be outdated—common when sites scale faster than bookmarks.</p>
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary liquid-btn">
+                    <span>Back to home</span>
+                    <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"/></svg>
+                </a>
+                <a href="/blog" class="btn btn-ghost">
+                    <span>Read the blog</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div class="scanline-overlay" aria-hidden="true"></div>
+    <script src="/script.js"></script>
+</body>
+</html>

@@ -2864,6 +2864,172 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 }
 
 /* ============================================
+   404 — Aurora (inspired by community 404 + aurora hero patterns, e.g. 21st.dev)
+   ============================================ */
+.error-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7rem 1.25rem 4rem;
+    overflow: hidden;
+}
+
+.error-page .hero-bg {
+    z-index: 0;
+}
+
+.error-aurora-mesh {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.error-aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.45;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+.error-aurora-blob-1 {
+    width: min(52vw, 520px);
+    height: min(52vw, 520px);
+    background: linear-gradient(145deg, rgba(6, 182, 212, 0.55), rgba(139, 92, 246, 0.4));
+    top: -12%;
+    left: -8%;
+    animation: errorAuroraDrift1 22s ease-in-out infinite alternate;
+}
+
+.error-aurora-blob-2 {
+    width: min(48vw, 480px);
+    height: min(48vw, 480px);
+    background: linear-gradient(160deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.25));
+    bottom: -15%;
+    right: -10%;
+    animation: errorAuroraDrift2 26s ease-in-out infinite alternate;
+}
+
+.error-aurora-blob-3 {
+    width: min(38vw, 380px);
+    height: min(38vw, 380px);
+    background: linear-gradient(180deg, rgba(124, 58, 237, 0.45), rgba(6, 182, 212, 0.3));
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: errorAuroraDrift3 20s ease-in-out infinite alternate;
+}
+
+.error-aurora-blob-4 {
+    width: min(28vw, 280px);
+    height: min(28vw, 280px);
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.5), transparent 70%);
+    top: 12%;
+    right: 18%;
+    animation: errorAuroraDrift4 18s ease-in-out infinite alternate;
+}
+
+@keyframes errorAuroraDrift1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(8%, 12%) scale(1.08); }
+}
+
+@keyframes errorAuroraDrift2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-10%, -6%) scale(1.12); }
+}
+
+@keyframes errorAuroraDrift3 {
+    0% { transform: translate(-50%, 0) scale(1); }
+    100% { transform: translate(-45%, -8%) scale(1.06); }
+}
+
+@keyframes errorAuroraDrift4 {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+    100% { transform: translate(-20px, 24px) scale(1.15); opacity: 0.55; }
+}
+
+.error-page-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 40rem;
+}
+
+.error-code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: clamp(4.5rem, 14vw, 8rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    margin: 0 0 0.5rem;
+    background: linear-gradient(120deg, #22d3ee, #a855f7 45%, #e879f9 75%, #c084fc);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: errorCodeShimmer 10s ease-in-out infinite alternate;
+    text-shadow: 0 0 80px rgba(168, 85, 247, 0.35);
+}
+
+@keyframes errorCodeShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.error-page h1 {
+    font-size: clamp(1.35rem, 4vw, 1.75rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.error-page .error-lead {
+    color: #a3a3a3;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 2rem;
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-actions .btn {
+    min-width: 10rem;
+}
+
+.error-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(168, 85, 247, 0.85);
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    background: rgba(168, 85, 247, 0.08);
+}
+
+@media (max-width: 480px) {
+    .error-actions { flex-direction: column; }
+    .error-actions .btn { width: 100%; }
+}
+
+/* ============================================
    REDUCED MOTION
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -2874,5 +3040,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
     }
     .particle-canvas, .flying-icons, .scanline-overlay,
     .hero-aurora, .hero-ring, .cursor-glow { display: none; }
+    .error-aurora-mesh { display: none; }
+    .error-code { animation: none !important; background-position: 50% 50% !important; }
     .portfolio-card { animation: none !important; }
 }
