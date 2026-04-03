@@ -56,6 +56,25 @@
         return true;
     }
 
+    /**
+     * Many mobile and in-app browsers block target="_blank" / window.open.
+     * Always handle explicitly: try a new tab, then same-tab navigation.
+     */
+    function openShareDestination(href) {
+        if (!href) return;
+        var w = null;
+        try {
+            /* Do not pass noopener in the features string — it makes window.open return null
+               in some browsers even when a tab opened, which would wrongly trigger same-tab fallback. */
+            w = window.open(href, '_blank');
+        } catch (e) {
+            w = null;
+        }
+        if (!w) {
+            window.location.assign(href);
+        }
+    }
+
     function buildBar(title, url) {
         url = normalizeShareUrl(absolutize(url));
         var encUrl = encodeURIComponent(url);
@@ -93,6 +112,14 @@
                 navigator.share(payload).catch(function () {});
             });
         }
+        wrap.querySelectorAll('a.blog-share-btn').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var href = a.getAttribute('href');
+                if (!href) return;
+                e.preventDefault();
+                openShareDestination(href);
+            });
+        });
         return wrap;
     }
 
