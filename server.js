@@ -310,6 +310,30 @@ const server = http.createServer((req, res) => {
     if (parsedUrl && req.method === 'GET' && parsedUrl.pathname === '/og/blog-card.png') {
         const ogBlog = require('./og-blog-card');
         const slug = parsedUrl.searchParams.get('slug') || '';
+        const postMeta = slug ? ogBlog.getPost(slug) : null;
+        if (postMeta && postMeta.shareImage) {
+            const raw = String(postMeta.shareImage).trim();
+            if (/^https?:\/\//i.test(raw)) {
+                res.writeHead(302, {
+                    Location: raw,
+                    'Cache-Control': 'public, max-age=86400'
+                });
+                res.end();
+                return;
+            }
+            const rel = raw.startsWith('/') ? raw.slice(1) : raw;
+            const imgPath = path.join(__dirname, rel);
+            if (rel && fs.existsSync(imgPath) && fs.statSync(imgPath).isFile()) {
+                const ext = path.extname(imgPath).toLowerCase();
+                const ct = MIME_TYPES[ext] || 'application/octet-stream';
+                res.writeHead(200, {
+                    'Content-Type': ct,
+                    'Cache-Control': 'public, max-age=604800'
+                });
+                fs.createReadStream(imgPath).pipe(res);
+                return;
+            }
+        }
         let buf = slug ? ogBlog.renderBlogOgPng(slug) : null;
         if (!buf) {
             const fp = ogBlog.getFallbackPngPath();

@@ -80,13 +80,28 @@ function getPost(slug) {
     const data = loadOgData();
     const post = data.posts && data.posts[slug];
     if (!post) return null;
+    const shareImage = post.shareImage && String(post.shareImage).trim() ? String(post.shareImage).trim() : null;
     return {
         title: post.title,
         description: post.description,
         category: (post.category || 'Blog').toUpperCase(),
         dateDisplay: post.dateDisplay || '',
-        accent: post.accent || '#06b6d4'
+        accent: post.accent || '#06b6d4',
+        shareImage
     };
+}
+
+/** og:image URL: stock photo when set, else generated PNG on this origin. */
+function resolveBlogOgImageUrl(siteOrigin, slug, post) {
+    const origin = String(siteOrigin || '').replace(/\/$/, '');
+    if (!post) return `${origin}/og-image.png`;
+    if (post.shareImage) {
+        const u = post.shareImage;
+        if (/^https?:\/\//i.test(u)) return u;
+        const p = u.startsWith('/') ? u : `/${u}`;
+        return `${origin}${p}`;
+    }
+    return `${origin}/og/blog-card.png?slug=${encodeURIComponent(slug)}`;
 }
 
 function buildSvg(post) {
@@ -160,6 +175,7 @@ function buildSvg(post) {
 function renderBlogOgPng(slug) {
     const post = getPost(slug);
     if (!post || !Resvg) return null;
+    if (post.shareImage) return null;
     const svg = buildSvg(post);
     const vendoredDir = getVendoredOgFontDir();
     const vendoredOk = fs.existsSync(path.join(vendoredDir, 'inter-latin-400-normal.woff2'));
@@ -222,9 +238,7 @@ function injectBlogPostHtml(html, slug, siteOrigin) {
     const canon = slug
         ? `${siteOrigin}/blog-post?slug=${encodeURIComponent(slug)}`
         : `${siteOrigin}/blog-post`;
-    const img = data
-        ? `${siteOrigin}/og/blog-card.png?slug=${encodeURIComponent(slug)}`
-        : `${siteOrigin}/og-image.png`;
+    const img = resolveBlogOgImageUrl(siteOrigin, slug, data);
 
     html = html.replace('<title>Blog | ScalePlus</title>', `<title>${escapeHtmlAttr(title)} | ScalePlus Blog</title>`);
     html = html.replace(
@@ -233,6 +247,18 @@ function injectBlogPostHtml(html, slug, siteOrigin) {
     );
 
     const ogType = data ? 'article' : 'website';
+    let imageExtras = '';
+    if (/\.(jpe?g|png|webp)(\?|$)/i.test(img)) {
+        const t = /\.png(\?|$)/i.test(img)
+            ? 'image/png'
+            : /\.webp(\?|$)/i.test(img)
+              ? 'image/webp'
+              : 'image/jpeg';
+        imageExtras += `\n    <meta property="og:image:type" content="${t}">`;
+    }
+    if (/^https:\/\//i.test(img)) {
+        imageExtras += `\n    <meta property="og:image:secure_url" content="${escapeHtmlAttr(img)}">`;
+    }
     const block = `
     <link rel="canonical" href="${escapeHtmlAttr(canon)}">
     <meta property="og:type" content="${ogType}">
@@ -240,7 +266,7 @@ function injectBlogPostHtml(html, slug, siteOrigin) {
     <meta property="og:title" content="${escapeHtmlAttr(title)}">
     <meta property="og:description" content="${escapeHtmlAttr(desc)}">
     <meta property="og:url" content="${escapeHtmlAttr(canon)}">
-    <meta property="og:image" content="${escapeHtmlAttr(img)}">
+    <meta property="og:image" content="${escapeHtmlAttr(img)}">${imageExtras}
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="${escapeHtmlAttr(title)}">
@@ -263,6 +289,7 @@ function injectBlogPostHtml(html, slug, siteOrigin) {
 module.exports = {
     loadOgData,
     getPost,
+    resolveBlogOgImageUrl,
     renderBlogOgPng,
     getFallbackPngPath,
     escapeXml,

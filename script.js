@@ -4,6 +4,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    const useFinePointerEffects = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
     // --- Flying Particle System ---
     const canvas = document.getElementById('particleCanvas');
     if (canvas) {
@@ -95,10 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseX = 0, mouseY = 0;
     let glowX = 0, glowY = 0;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+    if (useFinePointerEffects) {
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+    }
 
     function animateGlow() {
         glowX += (mouseX - glowX) * 0.08;
@@ -109,16 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         requestAnimationFrame(animateGlow);
     }
-    animateGlow();
+    if (cursorGlow && useFinePointerEffects) {
+        animateGlow();
+    }
 
-    // --- Liquid Card Effect ---
-    document.querySelectorAll('.liquid-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
-            card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+    // --- Liquid Card Effect (mouse / trackpad only; touch uses CSS fallback) ---
+    if (useFinePointerEffects) {
+        document.querySelectorAll('.liquid-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+                card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+            });
         });
-    });
+    }
 
     // --- Navbar Scroll ---
     const navbar = document.getElementById('navbar');
@@ -239,18 +247,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
     }
 
-    // --- Card Tilt Effect (lightweight, GPU-accelerated) ---
-    document.querySelectorAll('.service-card, .result-card, .pricing-card').forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform = `perspective(600px) rotateY(${x * 6}deg) rotateX(${y * -6}deg) translateY(-4px)`;
+    // --- Card Tilt Effect (desktop / fine pointer only) ---
+    if (useFinePointerEffects) {
+        document.querySelectorAll('.service-card, .result-card, .pricing-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(600px) rotateY(${x * 6}deg) rotateX(${y * -6}deg) translateY(-4px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
         });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
-        });
-    });
+    }
 
     // --- Parallax Sections (subtle background shift on scroll) ---
     const parallaxEls = document.querySelectorAll('.hero-orb, .about-orb, .cta-orb');
@@ -338,27 +348,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', highlightNav, { passive: true });
 
-    // --- Magnetic Button Effect ---
-    document.querySelectorAll('.liquid-btn').forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+    // --- Magnetic Button Effect (fine pointer only) ---
+    if (useFinePointerEffects) {
+        document.querySelectorAll('.liquid-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
         });
-        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-    });
+    }
 
-    // --- 3D Tilt on Cards ---
-    document.querySelectorAll('.service-card, .result-card, .portfolio-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            card.style.transform = `perspective(800px) rotateX(${(y - 0.5) * 6}deg) rotateY(${(x - 0.5) * -6}deg) translateY(-4px)`;
+    // --- 3D Tilt on portfolio (fine pointer only; service/result handled above) ---
+    if (useFinePointerEffects) {
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                card.style.transform = `perspective(800px) rotateX(${(y - 0.5) * 6}deg) rotateY(${(x - 0.5) * -6}deg) translateY(-4px)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
         });
-        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    });
+    }
 
     // --- Parallax Orbs ---
     const orbs = document.querySelectorAll('.hero-orb');
@@ -494,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (valueEl) valueEl.textContent = usd.toLocaleString();
     });
 
-    // --- Testimonials Stack ---
+    // --- Testimonials Stack (pointer capture + window listeners so touch / pen swipes work) ---
     (function initTestimonialStack() {
         const stack = document.getElementById('testimonialsStack');
         if (!stack) return;
@@ -505,11 +519,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = cards.length;
         let current = 0;
         let startX = 0;
+        let startY = 0;
         let deltaX = 0;
         let dragging = false;
+        let activePointerId = null;
         let autoTimer;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function front() {
+            return cards.find(c => c.getAttribute('data-pos') === '0');
+        }
 
         function arrange() {
+            stack.classList.remove('is-dragging');
             cards.forEach((card, i) => {
                 const pos = (i - current + total) % total;
                 card.setAttribute('data-pos', pos);
@@ -530,47 +552,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function resetAuto() {
             clearInterval(autoTimer);
-            autoTimer = setInterval(next, 6000);
+            if (!reduceMotion) {
+                autoTimer = setInterval(next, 6000);
+            }
         }
 
-        prevBtn.addEventListener('click', () => { prev(); resetAuto(); });
-        nextBtn.addEventListener('click', () => { next(); resetAuto(); });
-        dots.forEach(d => d.addEventListener('click', () => {
-            goTo(parseInt(d.dataset.slide));
-            resetAuto();
-        }));
+        function swipeThreshold(e) {
+            return e.pointerType === 'touch' ? 48 : 60;
+        }
 
-        const front = () => cards.find(c => c.getAttribute('data-pos') === '0');
+        function rotationFactor(e) {
+            return e.pointerType === 'touch' ? 0.025 : 0.04;
+        }
 
-        stack.addEventListener('pointerdown', e => {
-            const card = front();
-            if (!card || !card.contains(e.target)) return;
-            if (e.target.closest('a')) return;
-            dragging = true;
-            startX = e.clientX;
-            deltaX = 0;
-            card.classList.add('swiping');
-            card.setPointerCapture(e.pointerId);
-        });
-
-        stack.addEventListener('pointermove', e => {
-            if (!dragging) return;
+        function onPointerMove(e) {
+            if (!dragging || e.pointerId !== activePointerId) return;
             deltaX = e.clientX - startX;
+            const dy = e.clientY - startY;
+            if (e.cancelable && Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(dy) * 0.85) {
+                e.preventDefault();
+            }
             const card = front();
-            if (card) card.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.04}deg)`;
-        });
+            if (card) {
+                const rot = deltaX * rotationFactor(e);
+                card.style.transform = `translateX(${deltaX}px) rotate(${rot}deg)`;
+            }
+        }
 
-        stack.addEventListener('pointerup', () => {
-            if (!dragging) return;
+        function onPointerEnd(e) {
+            if (!dragging || e.pointerId !== activePointerId) return;
             dragging = false;
+            activePointerId = null;
+            stack.classList.remove('is-dragging');
+            window.removeEventListener('pointermove', onPointerMove, true);
+            window.removeEventListener('pointerup', onPointerEnd, true);
+            window.removeEventListener('pointercancel', onPointerEnd, true);
+
             const card = front();
             if (card) card.classList.remove('swiping');
-            if (Math.abs(deltaX) > 60) {
+
+            const th = swipeThreshold(e);
+            if (Math.abs(deltaX) > th) {
                 deltaX > 0 ? prev() : next();
                 resetAuto();
             } else {
                 arrange();
             }
+        }
+
+        prevBtn.addEventListener('click', () => { prev(); resetAuto(); });
+        nextBtn.addEventListener('click', () => { next(); resetAuto(); });
+        dots.forEach(d => d.addEventListener('click', () => {
+            goTo(parseInt(d.dataset.slide, 10));
+            resetAuto();
+        }));
+
+        stack.addEventListener('pointerdown', e => {
+            const card = front();
+            if (!card || !card.contains(e.target)) return;
+            if (e.target.closest('a')) return;
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+            dragging = true;
+            activePointerId = e.pointerId;
+            startX = e.clientX;
+            startY = e.clientY;
+            deltaX = 0;
+            card.classList.add('swiping');
+            stack.classList.add('is-dragging');
+
+            window.addEventListener('pointermove', onPointerMove, { capture: true, passive: false });
+            window.addEventListener('pointerup', onPointerEnd, { capture: true });
+            window.addEventListener('pointercancel', onPointerEnd, { capture: true });
         });
 
         arrange();

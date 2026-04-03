@@ -5,140 +5,160 @@
       "description": "A UK family restaurant hit 35% labor savings and 28% higher satisfaction—with lessons any Philippine eatery can copy without six-figure robot budgets.",
       "category": "Case Study",
       "dateDisplay": "Apr 3, 2026",
-      "accent": "#f97316"
+      "accent": "#f97316",
+      "shareImage": "/assets/blog-share/family-restaurant-labor-automation-ph.jpg"
     },
     "automation-vs-ai-what-to-build-first": {
       "title": "Automation vs AI: What Is Actually Different—and What to Build First",
       "description": "Automation follows rules. AI handles ambiguity. Most SMBs need both, in the right order—here is how to tell them apart with real examples.",
       "category": "Strategy",
       "dateDisplay": "Apr 5, 2026",
-      "accent": "#14b8a6"
+      "accent": "#14b8a6",
+      "shareImage": "/assets/blog-share/automation-vs-ai-what-to-build-first.jpg"
     },
     "top-ai-automation-platforms-small-business": {
       "title": "What Are the Top AI Automation Platforms for Small Businesses?",
       "description": "The best AI automation platforms for small businesses in 2026—ranked by real workflows, not hype. Includes concrete examples you can copy this week.",
       "category": "AI",
       "dateDisplay": "Apr 2, 2026",
-      "accent": "#6366f1"
+      "accent": "#6366f1",
+      "shareImage": "/assets/blog-share/top-ai-automation-platforms-small-business.jpg"
     },
     "why-business-automation-is-not-optional": {
       "title": "Why Business Automation Is No Longer Optional in 2026",
       "description": "The businesses that refuse to automate are bleeding time and money. Here is the real cost of staying manual.",
       "category": "Automation",
       "dateDisplay": "Mar 18, 2026",
-      "accent": "#a855f7"
+      "accent": "#a855f7",
+      "shareImage": "/assets/blog-share/why-business-automation-is-not-optional.jpg"
     },
     "5-automations-every-small-business-needs": {
       "title": "5 Automations Every Small Business Should Set Up This Week",
       "description": "You do not need a massive budget to start automating. These five workflows take less than a day to set up.",
       "category": "Strategy",
       "dateDisplay": "Mar 12, 2026",
-      "accent": "#22c55e"
+      "accent": "#22c55e",
+      "shareImage": "/assets/blog-share/5-automations-every-small-business-needs.jpg"
     },
     "ai-chatbots-vs-live-chat": {
       "title": "AI Chatbots vs Live Chat: Which One Actually Converts Better?",
       "description": "We tested both across 12 client businesses. Here is what the data actually says.",
       "category": "AI",
       "dateDisplay": "Mar 5, 2026",
-      "accent": "#3b82f6"
+      "accent": "#3b82f6",
+      "shareImage": "/assets/blog-share/ai-chatbots-vs-live-chat.jpg"
     },
     "how-we-saved-a-real-estate-agency-20-hours-per-week": {
       "title": "How We Saved a Real Estate Agency 20 Hours Per Week with One CRM",
       "description": "A real estate team was drowning in spreadsheets. We built them a system that changed everything.",
       "category": "Case Study",
       "dateDisplay": "Feb 26, 2026",
-      "accent": "#f59e0b"
+      "accent": "#f59e0b",
+      "shareImage": "/assets/blog-share/how-we-saved-a-real-estate-agency-20-hours-per-week.jpg"
     },
     "the-true-cost-of-not-following-up": {
       "title": "The True Cost of Not Following Up: Why 80% of Leads Die in Your Inbox",
       "description": "Most businesses respond to leads in 24 to 48 hours. By then, the lead is already gone.",
       "category": "Sales",
       "dateDisplay": "Feb 19, 2026",
-      "accent": "#ef4444"
+      "accent": "#ef4444",
+      "shareImage": "/assets/blog-share/the-true-cost-of-not-following-up.jpg"
     },
     "scaling-without-hiring": {
       "title": "Scaling Without Hiring: How Automation Lets You 3x Output with the Same Team",
       "description": "Hiring is expensive and slow. The smartest companies are scaling output by automating repetitive work.",
       "category": "Growth",
       "dateDisplay": "Feb 12, 2026",
-      "accent": "#db7093"
+      "accent": "#db7093",
+      "shareImage": "/assets/blog-share/scaling-without-hiring.jpg"
     },
     "zapier-vs-make-vs-n8n": {
       "title": "Zapier vs Make vs n8n: Which Automation Platform Is Right for You?",
       "description": "We have built hundreds of workflows across all three. Here is an honest comparison.",
       "category": "Tools",
       "dateDisplay": "Feb 5, 2026",
-      "accent": "#06b6d4"
+      "accent": "#06b6d4",
+      "shareImage": "/assets/blog-share/zapier-vs-make-vs-n8n.jpg"
     },
     "how-to-choose-the-right-crm-for-your-business": {
       "title": "How to Choose the Right CRM for Your Business (Without Overpaying)",
       "description": "Not every business needs Salesforce. Here is how to pick a CRM that fits your size, workflow, and budget.",
       "category": "CRM",
       "dateDisplay": "Jan 21, 2026",
-      "accent": "#f59e0b"
+      "accent": "#f59e0b",
+      "shareImage": "/assets/blog-share/how-to-choose-the-right-crm-for-your-business.jpg"
     },
     "email-marketing-automation-mistakes": {
       "title": "7 Email Marketing Automation Mistakes That Are Killing Your Open Rates",
       "description": "Your emails are being ignored — and it is probably not your subject lines. Here are the real culprits.",
       "category": "Email",
       "dateDisplay": "Jan 14, 2026",
-      "accent": "#ef4444"
+      "accent": "#ef4444",
+      "shareImage": "/assets/blog-share/email-marketing-automation-mistakes.jpg"
     },
     "ai-agents-for-small-business": {
       "title": "AI Agents Explained: What They Are and How Small Businesses Can Use Them Today",
       "description": "AI agents are not science fiction anymore. Here is a practical guide to what they can do for your business right now.",
       "category": "AI",
       "dateDisplay": "Jan 7, 2026",
-      "accent": "#3b82f6"
+      "accent": "#3b82f6",
+      "shareImage": "/assets/blog-share/ai-agents-for-small-business.jpg"
     },
     "website-conversion-optimization": {
       "title": "Your Website Looks Great But Nobody Is Converting: Here Is Why",
       "description": "A beautiful website means nothing if visitors leave without taking action. Here are the 6 conversion killers we see most often.",
       "category": "Web Dev",
       "dateDisplay": "Dec 30, 2025",
-      "accent": "#22c55e"
+      "accent": "#22c55e",
+      "shareImage": "/assets/blog-share/website-conversion-optimization.jpg"
     },
     "building-a-lead-machine": {
       "title": "Building a Lead Machine: The Automated Funnel That Runs While You Sleep",
       "description": "From ad click to booked call, fully automated. Here is the exact architecture.",
       "category": "Lead Gen",
       "dateDisplay": "Jan 28, 2026",
-      "accent": "#a855f7"
+      "accent": "#a855f7",
+      "shareImage": "/assets/blog-share/building-a-lead-machine.jpg"
     },
     "automation-roi-calculator": {
       "title": "How to Calculate the ROI of Automation (With Real Numbers)",
       "description": "Stop guessing whether automation is worth it. Here is the exact framework to calculate your return before you invest.",
       "category": "Strategy",
       "dateDisplay": "Dec 22, 2025",
-      "accent": "#db7093"
+      "accent": "#db7093",
+      "shareImage": "/assets/blog-share/automation-roi-calculator.jpg"
     },
     "crm-case-study-bpo-pipeline-manila": {
       "title": "Case Study: How a Manila BPO Doubled Qualified Pipeline in 60 Days with One CRM",
       "description": "Spreadsheets, three inboxes, and zero visibility were killing deals. Here is how we rebuilt their sales stack with ScalePlus-style CRM workflows.",
       "category": "Case Study",
       "dateDisplay": "Nov 28, 2025",
-      "accent": "#3b82f6"
+      "accent": "#3b82f6",
+      "shareImage": "/assets/blog-share/crm-case-study-bpo-pipeline-manila.jpg"
     },
     "ai-chatbot-whatsapp-messenger-deployment-playbook": {
       "title": "Deploying AI Chatbots on WhatsApp and Messenger: What Actually Works for Local Businesses",
       "description": "Channels, guardrails, handoff to humans, and metrics — a practical playbook from real chatbot builds for PH brands.",
       "category": "AI",
       "dateDisplay": "Nov 14, 2025",
-      "accent": "#8b5cf6"
+      "accent": "#8b5cf6",
+      "shareImage": "/assets/blog-share/ai-chatbot-whatsapp-messenger-deployment-playbook.jpg"
     },
     "custom-web-app-vs-no-code-when-to-build": {
       "title": "Custom Web Apps vs No-Code: When Your Business Should Build Instead of Duct-Tape",
       "description": "Not every problem needs code — but some problems break Airtable, Sheets, and five Zapier hacks. Here is how we decide with clients.",
       "category": "Web Dev",
       "dateDisplay": "Oct 31, 2025",
-      "accent": "#06b6d4"
+      "accent": "#06b6d4",
+      "shareImage": "/assets/blog-share/custom-web-app-vs-no-code-when-to-build.jpg"
     },
     "workflow-automation-multichannel-lead-routing": {
       "title": "Workflow Automation: Routing Facebook, Web, and Email Leads into One System",
       "description": "Stop copying leads by hand. Here is the integration pattern we use so every channel lands in CRM with context intact.",
       "category": "Automation",
       "dateDisplay": "Oct 17, 2025",
-      "accent": "#a855f7"
+      "accent": "#a855f7",
+      "shareImage": "/assets/blog-share/workflow-automation-multichannel-lead-routing.jpg"
     }
   }
 }
