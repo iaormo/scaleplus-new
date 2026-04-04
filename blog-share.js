@@ -45,15 +45,19 @@
     }
 
     function canUseNativeShare(url) {
-        if (typeof navigator.share !== 'function') return false;
-        if (typeof navigator.canShare === 'function') {
-            try {
-                return navigator.canShare({ url: url });
-            } catch (e) {
-                return true;
-            }
+        return typeof navigator.share === 'function' && !!url;
+    }
+
+    function preferNativeShareUi(url) {
+        if (!canUseNativeShare(url)) return false;
+        var hasTouch = typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 0;
+        if (hasTouch) return true;
+        if (!window.matchMedia) return false;
+        try {
+            return window.matchMedia('(hover: none), (pointer: coarse)').matches;
+        } catch (e) {
+            return false;
         }
-        return true;
     }
 
     /**
@@ -83,15 +87,18 @@
         var li = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encUrl;
         var fb = 'https://www.facebook.com/sharer/sharer.php?u=' + encUrl;
         var nativeFirst = canUseNativeShare(url);
+        var nativeOnly = preferNativeShareUi(url);
         var actionsHtml = '';
         if (nativeFirst) {
-            actionsHtml += '<button type="button" class="blog-share-btn blog-share-native" data-blog-native aria-label="Share via apps">' + ICONS.native + '</button>';
+            actionsHtml += '<button type="button" class="blog-share-btn blog-share-native' + (nativeOnly ? ' blog-share-btn--wide' : '') + '" data-blog-native aria-label="Share via apps">' + ICONS.native + (nativeOnly ? '<span>Share</span>' : '') + '</button>';
         }
-        actionsHtml +=
-            '<a class="blog-share-btn" href="' + tw + '" target="_blank" rel="noopener noreferrer" aria-label="Share on X">' + ICONS.x + '</a>' +
-            '<a class="blog-share-btn" href="' + li + '" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">' + ICONS.linkedin + '</a>' +
-            '<a class="blog-share-btn" href="' + fb + '" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">' + ICONS.facebook + '</a>' +
-            '<button type="button" class="blog-share-btn" data-blog-copy aria-label="Copy link">' + ICONS.link + '</button>';
+        if (!nativeOnly) {
+            actionsHtml +=
+                '<a class="blog-share-btn" href="' + tw + '" target="_blank" rel="noopener noreferrer" aria-label="Share on X">' + ICONS.x + '</a>' +
+                '<a class="blog-share-btn" href="' + li + '" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">' + ICONS.linkedin + '</a>' +
+                '<a class="blog-share-btn" href="' + fb + '" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">' + ICONS.facebook + '</a>';
+        }
+        actionsHtml += '<button type="button" class="blog-share-btn" data-blog-copy aria-label="Copy link">' + ICONS.link + '</button>';
         var wrap = document.createElement('div');
         wrap.className = 'blog-share';
         wrap.setAttribute('role', 'group');
@@ -107,7 +114,9 @@
         }
         var nativeBtn = wrap.querySelector('[data-blog-native]');
         if (nativeBtn) {
-            nativeBtn.addEventListener('click', function () {
+            nativeBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
                 var payload = { title: title, text: title, url: url };
                 navigator.share(payload).catch(function () {});
             });
@@ -117,6 +126,7 @@
                 var href = a.getAttribute('href');
                 if (!href) return;
                 e.preventDefault();
+                e.stopPropagation();
                 openShareDestination(href);
             });
         });
