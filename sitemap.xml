@@ -20,9 +20,27 @@
   </url>
   <url>
     <loc>https://scaleplus.io/blog</loc>
-    <lastmod>2026-04-05</lastmod>
+    <lastmod>2026-04-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://scaleplus.io/scaletools</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://scaleplus.io/cost-calculator</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://scaleplus.io/blog-post?slug=true-cost-pricing-philippines</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://scaleplus.io/blog-post?slug=automation-vs-ai-what-to-build-first</loc>

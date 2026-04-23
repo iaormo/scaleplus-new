@@ -18,6 +18,9 @@ const GHL_TOKEN = process.env.GHL_TOKEN || '';
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || '';
 const GHL_AGENCY_TOKEN = process.env.GHL_AGENCY_TOKEN || '';
 const GHL_COMPANY_ID = process.env.GHL_COMPANY_ID || '';
+// Newsletter sub-account (ScaleTools). Override via env in prod — rotate the PIT if the repo leaks.
+const GHL_NEWSLETTER_TOKEN = process.env.GHL_NEWSLETTER_TOKEN || 'pit-736854b6-9984-464f-b488-8c19db0f140e';
+const GHL_NEWSLETTER_LOCATION_ID = process.env.GHL_NEWSLETTER_LOCATION_ID || 'GfDBeSbJmjBtcqGK6vXN';
 
 const MIME_TYPES = {
     '.html': 'text/html',
@@ -83,12 +86,21 @@ const server = http.createServer((req, res) => {
                     email: form.email || '',
                     phone: form.phone || '',
                     tags: ['website-lead'],
-                    source: 'ScalePlus Website'
+                    source: form.source || 'ScalePlus Website'
                 };
 
                 // Add service as a tag if provided
                 if (form.service) {
                     contactPayload.tags.push(form.service);
+                }
+
+                // Merge any client-supplied tags (e.g. suggest-a-tool, scaletools)
+                if (Array.isArray(form.tags)) {
+                    for (const t of form.tags) {
+                        if (typeof t === 'string' && t.trim() && !contactPayload.tags.includes(t)) {
+                            contactPayload.tags.push(t.trim());
+                        }
+                    }
                 }
 
                 // Step 1: Create or update contact
@@ -118,6 +130,48 @@ const server = http.createServer((req, res) => {
                 res.end(JSON.stringify({ success: true }));
             } catch (err) {
                 console.error('GHL proxy error:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Server error' }));
+            }
+        });
+        return;
+    }
+
+    // --- API proxy for ScaleTools newsletter ---
+    if (req.method === 'POST' && req.url === '/api/newsletter') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+            try {
+                const form = JSON.parse(body);
+
+                if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Valid email required' }));
+                    return;
+                }
+
+                const contactPayload = {
+                    locationId: GHL_NEWSLETTER_LOCATION_ID,
+                    firstName: (form.firstName || '').slice(0, 80),
+                    email: form.email.toLowerCase().trim(),
+                    tags: ['newsletter', 'scaletools'],
+                    source: 'ScaleTools Newsletter Popup'
+                };
+
+                const contactRes = await ghlRequest('POST', '/contacts/upsert', contactPayload, GHL_NEWSLETTER_TOKEN);
+                console.log('GHL newsletter response:', contactRes.status, contactRes.body);
+
+                if (contactRes.status !== 200 && contactRes.status !== 201) {
+                    res.writeHead(contactRes.status, { 'Content-Type': 'application/json' });
+                    res.end(contactRes.body);
+                    return;
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+            } catch (err) {
+                console.error('GHL newsletter proxy error:', err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: 'Server error' }));
             }

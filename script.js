@@ -284,6 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Contact Form → GoHighLevel ---
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
+        // Pre-select "Suggest a Tool" + prime the notes box when coming from /scaletools
+        (function applySuggestToolIntent() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('suggest') !== 'tool') return;
+                const serviceSelect = contactForm.querySelector('[name="service"]');
+                if (serviceSelect) {
+                    const opt = Array.from(serviceSelect.options).find(o => o.value === 'Suggest a Tool');
+                    if (opt) serviceSelect.value = 'Suggest a Tool';
+                }
+                const notes = contactForm.querySelector('[name="notes"]');
+                if (notes && !notes.value) {
+                    notes.placeholder = "Tell us about the tool you'd love us to build...";
+                }
+                contactForm.dataset.intent = 'suggest-a-tool';
+                // Smooth-scroll to contact after paint
+                setTimeout(() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } catch (_) { /* noop */ }
+        })();
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button[type="submit"]');
@@ -292,14 +314,24 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
 
             const formData = new FormData(contactForm);
+            const service = formData.get('service') || '';
+
+            // Build tags based on intent + service
+            const tags = [];
+            if (contactForm.dataset.intent === 'suggest-a-tool' || service === 'Suggest a Tool') {
+                tags.push('suggest-a-tool');
+                tags.push('scaletools');
+            }
 
             const payload = {
                 firstName: formData.get('firstName') || '',
                 lastName: formData.get('lastName') || '',
                 email: formData.get('email'),
                 phone: formData.get('phone') || '',
-                service: formData.get('service') || '',
-                notes: (formData.get('notes') || '').trim()
+                service: service,
+                notes: (formData.get('notes') || '').trim(),
+                tags: tags,
+                source: tags.includes('suggest-a-tool') ? 'ScaleTools — Suggest a Tool' : undefined
             };
 
             try {
@@ -422,58 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Promo Popup (after 45s + scroll past 40%, once per visitor) ---
-    const promoPopup = document.getElementById('promoPopup');
-    const promoClose = document.getElementById('popupClose');
-    const promoCta = document.getElementById('popupCta');
-
-    if (promoPopup && !localStorage.getItem('promoPopupDismissed')) {
-        let promoTimerReady = false;
-        let promoScrollReady = false;
-        let promoShown = false;
-
-        function showPromoIfReady() {
-            if (promoShown || !promoTimerReady || !promoScrollReady) return;
-            promoShown = true;
-            promoPopup.style.display = 'flex';
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    promoPopup.classList.add('active');
-                });
-            });
-        }
-
-        setTimeout(() => { promoTimerReady = true; showPromoIfReady(); }, 45000);
-
-        window.addEventListener('scroll', function promoScrollCheck() {
-            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-            if (scrollPercent > 0.4) {
-                promoScrollReady = true;
-                window.removeEventListener('scroll', promoScrollCheck);
-                showPromoIfReady();
-            }
-        }, { passive: true });
-    }
-
-    function closePromoPopup() {
-        if (!promoPopup) return;
-        promoPopup.classList.remove('active');
-        localStorage.setItem('promoPopupDismissed', '1');
-        setTimeout(() => { promoPopup.style.display = 'none'; }, 500);
-    }
-
-    if (promoClose) promoClose.addEventListener('click', closePromoPopup);
-    if (promoPopup) {
-        promoPopup.addEventListener('click', (e) => {
-            if (e.target === promoPopup) closePromoPopup();
-        });
-    }
-    if (promoCta) {
-        promoCta.addEventListener('click', () => {
-            closePromoPopup();
-        });
-    }
-
     // --- Flowchart Stagger Entrance ---
     const flowcharts = document.querySelectorAll('.flowchart');
     const flowchartAnimated = new Set();
@@ -498,15 +478,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', animateFlowcharts, { passive: true });
     animateFlowcharts();
-
-    // --- Pricing (USD only) ---
-    document.querySelectorAll('.price-amount[data-usd]').forEach(el => {
-        const usd = parseInt(el.dataset.usd);
-        const currencyEl = el.querySelector('.price-currency');
-        const valueEl = el.querySelector('.price-value');
-        if (currencyEl) currencyEl.textContent = '$';
-        if (valueEl) valueEl.textContent = usd.toLocaleString();
-    });
 
     // --- Testimonials Stack (pointer capture + window listeners so touch / pen swipes work) ---
     (function initTestimonialStack() {
@@ -653,9 +624,64 @@ document.addEventListener('DOMContentLoaded', () => {
             roi:             document.getElementById('roiROI'),
             payback:         document.getElementById('roiPayback')
         };
+        const currencySelect = document.getElementById('roiCurrency');
 
-        const fmt = n => n.toLocaleString('en-US');
-        const fmtUSD = n => '$' + fmt(Math.round(n));
+        // Approximate USD conversion rates — good enough for a directional ROI estimate.
+        const CURRENCIES = {
+            USD: { symbol: '$',   rate: 1,    locale: 'en-US' },
+            PHP: { symbol: '₱',   rate: 56,   locale: 'en-PH' },
+            EUR: { symbol: '€',   rate: 0.92, locale: 'de-DE' },
+            GBP: { symbol: '£',   rate: 0.79, locale: 'en-GB' },
+            AUD: { symbol: 'A$',  rate: 1.52, locale: 'en-AU' },
+            CAD: { symbol: 'C$',  rate: 1.36, locale: 'en-CA' },
+            SGD: { symbol: 'S$',  rate: 1.35, locale: 'en-SG' },
+            MYR: { symbol: 'RM',  rate: 4.5,  locale: 'ms-MY' },
+            AED: { symbol: 'AED ', rate: 3.67, locale: 'en-AE' },
+            INR: { symbol: '₹',   rate: 83,   locale: 'en-IN' }
+        };
+
+        // USD-native slider bounds; all currencies scale from this.
+        const BASE = {
+            rate:       { min: 10,  max: 150,   step: 5,   default: 25 },
+            investment: { min: 499, max: 15000, step: 100, default: 999 }
+        };
+
+        let currency = CURRENCIES.USD;
+
+        function niceRound(n, step) {
+            return Math.max(step, Math.round(n / step) * step);
+        }
+
+        function fmt(n) { return Math.round(n).toLocaleString(currency.locale); }
+        function fmtMoney(n) { return currency.symbol + fmt(n); }
+
+        function applyCurrencyToSliders(prevRate) {
+            // Capture current USD-equivalent values BEFORE mutating min/max
+            // (browsers auto-clamp slider.value when min/max change).
+            const currentRateUSD = prevRate ? parseFloat(sliders.rate.value) / prevRate : BASE.rate.default;
+            const currentInvUSD = prevRate ? parseFloat(sliders.investment.value) / prevRate : BASE.investment.default;
+
+            // Rate slider
+            const rateStep = niceRound(BASE.rate.step * currency.rate, 1) || 1;
+            const rateMin = niceRound(BASE.rate.min * currency.rate, rateStep);
+            const rateMax = niceRound(BASE.rate.max * currency.rate, rateStep);
+            const rateTarget = niceRound(currentRateUSD * currency.rate, rateStep);
+            // Set value OUT OF BOUNDS first so it can land inside the new range without clamping glitches.
+            sliders.rate.min = rateMin;
+            sliders.rate.max = rateMax;
+            sliders.rate.step = rateStep;
+            sliders.rate.value = Math.max(rateMin, Math.min(rateMax, rateTarget));
+
+            // Investment slider
+            const invStep = niceRound(BASE.investment.step * currency.rate, 1) || 1;
+            const invMin = niceRound(BASE.investment.min * currency.rate, invStep);
+            const invMax = niceRound(BASE.investment.max * currency.rate, invStep);
+            const invTarget = niceRound(currentInvUSD * currency.rate, invStep);
+            sliders.investment.min = invMin;
+            sliders.investment.max = invMax;
+            sliders.investment.step = invStep;
+            sliders.investment.value = Math.max(invMin, Math.min(invMax, invTarget));
+        }
 
         function paintSlider(slider) {
             const pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
@@ -663,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function animateNumber(el, target, prefix, suffix) {
-            const current = parseInt(el.textContent.replace(/[^0-9.-]/g, '')) || 0;
+            const current = parseFloat(el.textContent.replace(/[^0-9.-]/g, '')) || 0;
             if (current === target) return;
             const diff = target - current;
             const steps = 12;
@@ -681,14 +707,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function calc() {
             const e = parseInt(sliders.employees.value);
-            const r = parseInt(sliders.rate.value);
+            const r = parseFloat(sliders.rate.value);
             const h = parseInt(sliders.hours.value);
-            const inv = parseInt(sliders.investment.value);
+            const inv = parseFloat(sliders.investment.value);
 
             vals.employees.textContent = e;
-            vals.rate.textContent = '$' + r;
+            vals.rate.textContent = fmtMoney(r);
             vals.hours.textContent = h;
-            vals.investment.textContent = fmtUSD(inv);
+            vals.investment.textContent = fmtMoney(inv);
 
             Object.values(sliders).forEach(paintSlider);
 
@@ -698,11 +724,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const monthlySavings = Math.round(hoursSavedWeekly * r * 4.33);
             const annualSavings = monthlySavings * 12;
             const roi = Math.round((annualSavings - inv) / inv * 100);
-            const paybackMonths = inv / monthlySavings;
+            const paybackMonths = inv / Math.max(1, monthlySavings);
 
             animateNumber(out.hoursSaved, hoursSavedMonthly, '', '');
-            animateNumber(out.monthlySavings, monthlySavings, '$', '');
-            animateNumber(out.annualSavings, annualSavings, '$', '');
+            animateNumber(out.monthlySavings, monthlySavings, currency.symbol, '');
+            animateNumber(out.annualSavings, annualSavings, currency.symbol, '');
 
             const roiEl = out.roi;
             const roiTarget = roi;
@@ -724,6 +750,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        function setCurrency(code) {
+            const next = CURRENCIES[code];
+            if (!next) return;
+            const prevRate = currency.rate;
+            currency = next;
+            applyCurrencyToSliders(prevRate);
+            calc();
+        }
+
+        currencySelect?.addEventListener('change', (e) => setCurrency(e.target.value));
+
+        // Initial state: match USD defaults, paint sliders
+        applyCurrencyToSliders(null);
         Object.values(sliders).forEach(s => {
             s.addEventListener('input', calc);
             paintSlider(s);

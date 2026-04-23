@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>True Cost Calculator — Find Your Real Margin | ScaleTools</title>
+    <meta name="description" content="Find out what your product actually costs — rent, labor, delivery fees, spoilage and all. See your real margin and what you should be charging. Free, no signup.">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://scaleplus.io/cost-calculator">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="scaletools.css?v=1">
+    <link rel="stylesheet" href="cost-calculator.css?v=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+</head>
+<body>
+
+<div class="hero-bg" aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;">
+    <div class="hero-grid"></div>
+    <div class="hero-aurora"></div>
+    <div class="hero-orb hero-orb-1"></div>
+</div>
+
+<nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo" aria-label="ScalePlus Home">
+            <img src="logo.png" alt="ScalePlus" class="nav-logo-img">
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="scaletools.html" aria-current="page">ScaleTools</a></li>
+            <li><a href="crm.html">CRM</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="index.html#contact" class="nav-cta">Get Started</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<main class="cc-main">
+    <div class="container">
+
+        <div class="cc-header">
+            <a href="scaletools.html" class="cc-back">← Back to ScaleTools</a>
+            <span class="eyebrow">Free Tool · No Signup</span>
+            <h1 class="cc-title">True Cost <span class="text-gradient">Calculator</span></h1>
+            <p class="cc-lead">
+                You think you're making ₱X per sale. The real number is almost always smaller — because rent, labor, delivery fees, and spoilage all eat into it.
+                This tool walks you through every cost, then shows you what you're really making and what you should charge.
+            </p>
+        </div>
+
+        <!-- Stepper -->
+        <div class="cc-stepper" role="tablist" aria-label="Calculator steps">
+            <button class="cc-step is-active" role="tab" data-step="1" aria-selected="true">
+                <span class="cc-step-num">1</span><span class="cc-step-label">Product</span>
+            </button>
+            <span class="cc-step-rail"></span>
+            <button class="cc-step" role="tab" data-step="2" aria-selected="false">
+                <span class="cc-step-num">2</span><span class="cc-step-label">Ingredients</span>
+            </button>
+            <span class="cc-step-rail"></span>
+            <button class="cc-step" role="tab" data-step="3" aria-selected="false">
+                <span class="cc-step-num">3</span><span class="cc-step-label">Hidden costs</span>
+            </button>
+            <span class="cc-step-rail"></span>
+            <button class="cc-step" role="tab" data-step="4" aria-selected="false">
+                <span class="cc-step-num">4</span><span class="cc-step-label">Results</span>
+            </button>
+        </div>
+
+        <!-- Saved products chip row -->
+        <div class="cc-saved" id="ccSaved" hidden>
+            <span class="cc-saved-label">Saved this session:</span>
+            <div class="cc-saved-chips" id="ccSavedChips"></div>
+        </div>
+
+        <!-- Panels -->
+        <div class="cc-panel liquid-card is-active" data-panel="1">
+            <header class="cc-panel-head">
+                <h2 class="cc-panel-title">Tell us about your product</h2>
+                <p class="cc-panel-sub">Don't overthink it — rough numbers are fine. You can edit later.</p>
+            </header>
+
+            <div class="cc-form">
+                <label class="cc-field">
+                    <span class="cc-label">What are you selling?</span>
+                    <input type="text" id="productName" placeholder="e.g. Chocolate cake, brow lamination, t-shirt" />
+                    <span class="cc-hint">Just a nickname so you remember.</span>
+                </label>
+
+                <label class="cc-field">
+                    <span class="cc-label">What do you sell it for? <span class="cc-currency">₱</span></span>
+                    <input type="number" id="sellingPrice" inputmode="decimal" min="0" step="any" placeholder="e.g. 850" />
+                    <span class="cc-hint">The price your customer actually pays you.</span>
+                </label>
+
+                <label class="cc-field">
+                    <span class="cc-label">How many do you make in a month?</span>
+                    <input type="number" id="monthlyVolume" inputmode="numeric" min="1" step="1" placeholder="e.g. 80" />
+                    <span class="cc-hint">Best guess is fine. We'll use this to spread your rent and utilities across units.</span>
+                </label>
+            </div>
+
+            <div class="cc-actions">
+                <span></span>
+                <button class="btn btn-primary" data-next="2">Next: add ingredients →</button>
+            </div>
+        </div>
+
+        <div class="cc-panel liquid-card" data-panel="2" hidden>
+            <header class="cc-panel-head">
+                <h2 class="cc-panel-title">What goes into one unit?</h2>
+                <p class="cc-panel-sub">List the ingredients or materials for <strong>one</strong> of whatever you sell.</p>
+            </header>
+
+            <div class="cc-rows" id="ingredientRows"></div>
+            <button class="btn btn-ghost cc-add-row" type="button" id="addIngredient">
+                <span>＋</span> Add another ingredient
+            </button>
+
+            <div class="cc-mini-summary" id="ingredientsMini">
+                Ingredients per unit: <strong>₱0.00</strong>
+            </div>
+
+            <div class="cc-actions">
+                <button class="btn btn-ghost" data-prev="1">← Back</button>
+                <button class="btn btn-primary" data-next="3">Next: hidden costs →</button>
+            </div>
+        </div>
+
+        <div class="cc-panel liquid-card" data-panel="3" hidden>
+            <header class="cc-panel-head">
+                <h2 class="cc-panel-title">The costs most people forget</h2>
+                <p class="cc-panel-sub">This is where the money quietly disappears. Put in estimates — even rough ones help.</p>
+            </header>
+
+            <div class="cc-hidden-grid">
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Monthly electricity & utilities <span class="cc-currency">₱</span></span>
+                    <input type="number" id="utilities" inputmode="decimal" min="0" step="any" placeholder="e.g. 3500" />
+                    <span class="cc-hint">We'll divide this across your monthly units.</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Monthly rent <span class="cc-currency">₱</span></span>
+                    <input type="number" id="rent" inputmode="decimal" min="0" step="any" placeholder="e.g. 8000" />
+                    <span class="cc-hint">Put 0 if you work from home.</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">How long does one unit take you? <small>(hours)</small></span>
+                    <input type="number" id="laborHours" inputmode="decimal" min="0" step="any" placeholder="e.g. 1.5" />
+                    <span class="cc-hint">Include prep, cooking, packing — everything.</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Your hourly rate <span class="cc-currency">₱</span></span>
+                    <input type="number" id="hourlyRate" inputmode="decimal" min="0" step="any" placeholder="e.g. 200" />
+                    <span class="cc-hint">If you paid someone to do it, what would you pay per hour?</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Delivery platform commission <small>(%)</small></span>
+                    <input type="number" id="platformPct" inputmode="decimal" min="0" max="100" step="any" placeholder="e.g. 25" />
+                    <span class="cc-hint">GrabFood, Shopee, Lazada, etc. Put 0 if you only sell direct.</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Packaging per unit <span class="cc-currency">₱</span></span>
+                    <input type="number" id="packaging" inputmode="decimal" min="0" step="any" placeholder="e.g. 25" />
+                    <span class="cc-hint">Box, sticker, bubble wrap, tape.</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Spoilage / wastage <small>(%)</small></span>
+                    <input type="number" id="spoilagePct" inputmode="decimal" min="0" max="100" step="any" placeholder="e.g. 5" />
+                    <span class="cc-hint">What % of your ingredients get thrown away?</span>
+                </label>
+
+                <label class="cc-field cc-field--inline">
+                    <span class="cc-label">Other fees per unit <span class="cc-currency">₱</span></span>
+                    <input type="number" id="otherFees" inputmode="decimal" min="0" step="any" placeholder="e.g. 10" />
+                    <span class="cc-hint">Taxes, permits, SaaS tools, bank fees — divide monthly by units.</span>
+                </label>
+
+            </div>
+
+            <div class="cc-actions">
+                <button class="btn btn-ghost" data-prev="2">← Back</button>
+                <button class="btn btn-primary" data-next="4" id="computeBtn">See the real numbers →</button>
+            </div>
+        </div>
+
+        <div class="cc-panel liquid-card" data-panel="4" hidden>
+
+            <div class="cc-callout" id="ccCallout">
+                <span class="cc-callout-eyebrow">The honest truth</span>
+                <p class="cc-callout-text" id="ccCalloutText">—</p>
+            </div>
+
+            <div class="cc-results-grid">
+                <div class="cc-stat">
+                    <span class="cc-stat-label">True cost per unit</span>
+                    <span class="cc-stat-value" id="statTrueCost">₱0.00</span>
+                </div>
+                <div class="cc-stat">
+                    <span class="cc-stat-label">Your selling price</span>
+                    <span class="cc-stat-value" id="statPrice">₱0.00</span>
+                </div>
+                <div class="cc-stat cc-stat--profit">
+                    <span class="cc-stat-label">Actual profit per unit</span>
+                    <span class="cc-stat-value" id="statProfit">₱0.00</span>
+                </div>
+                <div class="cc-stat">
+                    <span class="cc-stat-label">Real margin</span>
+                    <span class="cc-stat-value" id="statMargin">0%</span>
+                </div>
+            </div>
+
+            <!-- Visual breakdown -->
+            <section class="cc-breakdown">
+                <h3 class="cc-section-title">Where every peso goes</h3>
+                <div class="cc-bar" id="ccBar" aria-hidden="true"></div>
+                <ul class="cc-legend" id="ccLegend"></ul>
+            </section>
+
+            <!-- Reverse calculator -->
+            <section class="cc-reverse">
+                <h3 class="cc-section-title">What should I actually charge?</h3>
+                <p class="cc-reverse-sub">Tell us the margin you want. We'll tell you the fair price.</p>
+                <div class="cc-reverse-row">
+                    <label class="cc-field cc-field--inline">
+                        <span class="cc-label">Target margin <small>(%)</small></span>
+                        <input type="number" id="targetMargin" min="0" max="99" step="1" value="40" />
+                    </label>
+                    <div class="cc-reverse-result">
+                        <span class="cc-reverse-label">Suggested price</span>
+                        <span class="cc-reverse-value" id="statSuggestedPrice">₱0.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cc-actions cc-actions--results">
+                <button class="btn btn-ghost" data-prev="3">← Edit numbers</button>
+                <div class="cc-actions-group">
+                    <button class="btn btn-ghost" id="saveProductBtn" type="button">
+                        <span>＋</span> Save this product
+                    </button>
+                    <button class="btn btn-ghost" id="printBtn" type="button">Print summary</button>
+                    <button class="btn btn-ghost" id="exportPdfBtn" type="button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path></svg>
+                        Export PDF
+                    </button>
+                    <button class="btn btn-primary" id="restartBtn" type="button">Start fresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reassuring footer note -->
+        <p class="cc-note">
+            Nothing you type leaves your browser. No signup, no tracking, no ads. Built by
+            <a href="index.html">ScalePlus</a> because pricing shouldn't be a guessing game.
+        </p>
+
+    </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+    <div class="container">
+        <div class="footer-bottom">
+            <p>&copy; 2026 ScalePlus. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+        </div>
+    </div>
+</footer>
+
+<script src="cost-calculator.js?v=1"></script>
+<script src="newsletter-popup.js" defer></script>
+</body>
+</html>

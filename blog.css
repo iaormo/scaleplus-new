@@ -458,12 +458,147 @@ a.blog-share-btn {
 
 /* Blog Post CTA */
 .blog-post-cta {
-    margin-top: 64px;
     padding: 48px;
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     text-align: center;
+}
+
+/* ============================================
+   CTA CAROUSEL (swipable: audit + newsletter)
+   ============================================ */
+.blog-cta-carousel {
+    position: relative;
+    margin-top: 64px;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.blog-cta-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+.blog-cta-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+.blog-cta-slide--newsletter {
+    background:
+        linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.03)),
+        var(--bg-card);
+    border-color: rgba(168, 85, 247, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 40px rgba(168, 85, 247, 0.08);
+}
+.blog-cta-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 14px;
+}
+.blog-cta-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 480px;
+    margin: 16px auto 0;
+    justify-content: center;
+}
+.blog-cta-form input[type="email"] {
+    flex: 1 1 240px;
+    background: rgba(5, 5, 5, 0.55);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font: 500 0.9375rem/1.3 var(--font-main);
+    color: var(--text-primary);
+    min-height: 48px;
+    transition: all 0.2s;
+}
+.blog-cta-form input[type="email"]::placeholder { color: var(--text-muted); }
+.blog-cta-form input[type="email"]:focus {
+    outline: none;
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+.blog-cta-form .btn { flex: 0 0 auto; min-height: 48px; }
+.blog-cta-feedback {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-top: 12px;
+    color: var(--text-muted);
+    min-height: 1em;
+}
+.blog-cta-feedback.is-error { color: #f87171; }
+.blog-cta-feedback.is-success { color: #4ade80; }
+.blog-cta-nav {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.blog-cta-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s;
+}
+.blog-cta-dot:hover { background: rgba(168, 85, 247, 0.3); }
+.blog-cta-dot.is-active {
+    width: 28px;
+    border-radius: 4px;
+    background: var(--purple);
+    border-color: var(--purple);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+.blog-cta-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(5, 5, 5, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    z-index: 2;
+}
+.blog-cta-arrow:hover:not(:disabled) {
+    color: var(--text-primary);
+    border-color: rgba(168, 85, 247, 0.4);
+    background: rgba(168, 85, 247, 0.12);
+}
+.blog-cta-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.blog-cta-arrow--prev { left: 12px; }
+.blog-cta-arrow--next { right: 12px; }
+@media (max-width: 640px) {
+    .blog-cta-arrow { display: none; }
+    .blog-cta-form { flex-direction: column; }
+    .blog-cta-form .btn { width: 100%; justify-content: center; }
+    .blog-post-cta { padding: 32px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .blog-cta-track { transition: none; }
 }
 
 .blog-post-cta h3 {

@@ -323,6 +323,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="scaletools.html">ScaleTools</a></li>
                 <li><a href="crm.html">CRM</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#roi-calculator">ROI Calculator</a></li>
@@ -586,6 +587,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div class="roi-wrapper">
                 <div class="roi-inputs">
+                    <div class="roi-field roi-field--currency">
+                        <label for="roiCurrency">
+                            <span class="roi-label-text">Currency</span>
+                        </label>
+                        <select id="roiCurrency" class="roi-currency-select" aria-label="Choose your currency">
+                            <option value="USD" selected>US Dollar ($)</option>
+                            <option value="PHP">Philippine Peso (₱)</option>
+                            <option value="EUR">Euro (€)</option>
+                            <option value="GBP">British Pound (£)</option>
+                            <option value="AUD">Australian Dollar (A$)</option>
+                            <option value="CAD">Canadian Dollar (C$)</option>
+                            <option value="SGD">Singapore Dollar (S$)</option>
+                            <option value="MYR">Malaysian Ringgit (RM)</option>
+                            <option value="AED">UAE Dirham (AED)</option>
+                            <option value="INR">Indian Rupee (₹)</option>
+                        </select>
+                    </div>
                     <div class="roi-field">
                         <label for="roiEmployees">
                             <span class="roi-label-text">Team members on repetitive tasks</span>
@@ -672,8 +690,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="pricing-badge free-badge">Free</div>
                         <h3>Automation Audit</h3>
                         <div class="pricing-price">
-                            <span class="price-label">Starts at</span>
-                            <span class="price-amount" data-usd="0"><span class="price-currency">$</span>0</span>
+                            <span class="price-label-custom">Included</span>
                         </div>
                         <p class="pricing-desc">We analyze your workflows and show you exactly where automation saves time and money.</p>
                         <ul class="pricing-features">
@@ -692,8 +709,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="pricing-popular">Most Popular</div>
                         <h3>Chatbot Setup</h3>
                         <div class="pricing-price">
-                            <span class="price-label">Starts at</span>
-                            <span class="price-amount" data-usd="499"><span class="price-currency">$</span><span class="price-value">499</span></span>
+                            <span class="price-label-custom">Custom Quote</span>
                         </div>
                         <p class="pricing-desc">AI-powered chatbot that handles inquiries, books appointments, and qualifies leads 24/7.</p>
                         <ul class="pricing-features">
@@ -712,8 +728,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="pricing-card-inner">
                         <h3>Full System Build</h3>
                         <div class="pricing-price">
-                            <span class="price-label">Starts at</span>
-                            <span class="price-amount" data-usd="999"><span class="price-currency">$</span><span class="price-value">999</span></span>
+                            <span class="price-label-custom">Custom Quote</span>
                         </div>
                         <p class="pricing-desc">End-to-end automation system — CRM, workflows, AI chatbots, and integrations built for your business.</p>
                         <ul class="pricing-features">
@@ -1204,6 +1219,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <option value="AI Chatbot">AI Chatbot</option>
                             <option value="Custom Web Development">Custom Web Development</option>
                             <option value="CRM & System Integration">CRM & System Integration</option>
+                            <option value="Suggest a Tool">Suggest a Tool (ScaleTools)</option>
                             <option value="Other / Not Sure">Other / Not Sure</option>
                         </select>
                     </div>
@@ -1315,19 +1331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <!-- Popup -->
-    <div class="popup-overlay" id="promoPopup">
-        <div class="popup-box">
-            <button class="popup-close" id="popupClose" aria-label="Close popup">&times;</button>
-            <div class="popup-icon">
-                <svg width="28" height="28" viewBox="0 0 256 256" fill="currentColor"><path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.5C39.74,56.83,78.26,17.15,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.64,71.64,0,0,0,27.64,56.3h0A32,32,0,0,1,96,186v6h24V147.31L90.34,117.66a8,8,0,0,1,11.32-11.32L128,132.69l26.34-26.35a8,8,0,0,1,11.32,11.32L136,147.31V192h24v-6a32.12,32.12,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Z"/></svg>
-            </div>
-            <h3 class="popup-title">Get Your Free Automation Audit</h3>
-            <p class="popup-text">Discover how AI automation can save your business 30+ hours per week. Limited spots available.</p>
-            <a href="#contact" class="popup-btn" id="popupCta">Claim Free Audit &rarr;</a>
-        </div>
-    </div>
-
     <script src="script.js"></script>
+    <script src="newsletter-popup.js" defer></script>
 </body>
 </html>
