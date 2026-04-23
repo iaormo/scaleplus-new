@@ -410,15 +410,30 @@ const server = http.createServer((req, res) => {
     // --- Static files ---
     let filePath = req.url === '/' ? '/index.html' : req.url;
     filePath = filePath.split('?')[0];
-    // Route /crm to crm.html
-    if (filePath === '/crm') filePath = '/crm.html';
-    if (filePath === '/crm-signup') filePath = '/crm-signup.html';
-    if (filePath === '/case-study') filePath = '/case-study.html';
-    if (filePath === '/blog') filePath = '/blog.html';
-    if (filePath === '/blog-post') filePath = '/blog-post.html';
-    if (filePath === '/privacy') filePath = '/privacy.html';
-    if (filePath === '/terms') filePath = '/terms.html';
-    if (filePath === '/404') filePath = '/404.html';
+    // Strip trailing slash except for root
+    if (filePath.length > 1 && filePath.endsWith('/')) filePath = filePath.slice(0, -1);
+
+    // 301 canonicalize /foo.html → /foo (cleaner URLs, better SEO)
+    if (req.method === 'GET' && filePath.endsWith('.html') && filePath !== '/index.html') {
+        const clean = filePath.slice(0, -'.html'.length);
+        const qs = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+        res.writeHead(301, { Location: clean + qs });
+        res.end();
+        return;
+    }
+
+    // Clean URL → .html file on disk. Any path with no extension that maps to an
+    // existing *.html file in the project root gets transparently rewritten.
+    const hasExt = path.extname(filePath);
+    if (!hasExt && filePath !== '/index.html') {
+        const candidate = path.join(__dirname, filePath + '.html');
+        try {
+            if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+                filePath = filePath + '.html';
+            }
+        } catch (_) { /* fall through */ }
+    }
+
     const fullPath = path.join(__dirname, filePath);
     const ext = path.extname(fullPath).toLowerCase();
 
