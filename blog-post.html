@@ -1275,6 +1275,8 @@ Auto → Customer orders → Digital kitchen ticket → Ready bell → Pickup</c
                         '<h3>Get practical playbooks every week</h3>' +
                         '<p>One email a week: free tools, straight-talking AI and automation strategy, and business news worth your time. Unsubscribe any time.</p>' +
                         '<form class="blog-cta-form" id="blogCtaNewsletter" novalidate>' +
+                            '<input type="text" name="firstName" id="blogCtaFirstName" placeholder="First name" autocomplete="given-name" maxlength="80" required>' +
+                            '<input type="text" name="lastName" id="blogCtaLastName" placeholder="Last name (optional)" autocomplete="family-name" maxlength="80">' +
                             '<input type="email" name="email" id="blogCtaEmail" placeholder="you@yourbusiness.com" autocomplete="email" required inputmode="email">' +
                             '<button type="submit" class="btn btn-primary liquid-btn" id="blogCtaSubmit">' +
                                 '<span class="blog-cta-submit-label">Subscribe</span>' +
@@ -1361,12 +1363,23 @@ Auto → Customer orders → Digital kitchen ticket → Ready bell → Pickup</c
             const feedback = document.getElementById('blogCtaFeedback');
             const submitLabel = submitBtn?.querySelector('.blog-cta-submit-label');
 
+            const firstNameInput = document.getElementById('blogCtaFirstName');
+            const lastNameInput = document.getElementById('blogCtaLastName');
+
             form?.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
                 const email = emailInput.value.trim();
                 feedback.textContent = '';
                 feedback.className = 'blog-cta-feedback';
 
+                if (!firstName) {
+                    feedback.textContent = 'Please enter your first name.';
+                    feedback.classList.add('is-error');
+                    firstNameInput.focus();
+                    return;
+                }
                 if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     feedback.textContent = 'Please enter a valid email address.';
                     feedback.classList.add('is-error');
@@ -1380,7 +1393,7 @@ Auto → Customer orders → Digital kitchen ticket → Ready bell → Pickup</c
                     const res = await fetch('/api/newsletter', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email })
+                        body: JSON.stringify({ email, firstName, lastName })
                     });
                     if (!res.ok) throw new Error('Subscribe failed');
                     try { localStorage.setItem('scaleplus_newsletter_subscribed', '1'); } catch (_) {}

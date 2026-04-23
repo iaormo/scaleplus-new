@@ -154,6 +154,7 @@ const server = http.createServer((req, res) => {
                 const contactPayload = {
                     locationId: GHL_NEWSLETTER_LOCATION_ID,
                     firstName: (form.firstName || '').slice(0, 80),
+                    lastName: (form.lastName || '').slice(0, 80),
                     email: form.email.toLowerCase().trim(),
                     tags: ['newsletter', 'scaletools'],
                     source: 'ScaleTools Newsletter Popup'

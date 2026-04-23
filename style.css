@@ -436,60 +436,60 @@ body:hover .cursor-glow { opacity: 1; }
     opacity: 0;
 }
 
-.glitch-text {
-    animation: glitchShudder 3.6s steps(1, end) infinite;
+/* VHS-style RGB split: always subtly present, with occasional slice bursts.
+   Red tilts left, cyan tilts right — classic chromatic aberration feel. */
+.glitch-text::before,
+.glitch-text::after {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: currentColor;
+    mix-blend-mode: screen;
+    pointer-events: none;
 }
 
 .glitch-text::before {
-    animation: glitch1 3.6s steps(1, end) infinite;
-    clip-path: inset(0 0 58% 0);
-    mix-blend-mode: screen;
-    filter: hue-rotate(-12deg);
+    color: #ff2e6a;                 /* red channel */
+    opacity: 0.55;
+    clip-path: none;
+    animation: vhsRed 4.2s ease-in-out infinite;
 }
 
 .glitch-text::after {
-    animation: glitch2 3.6s steps(1, end) infinite;
-    clip-path: inset(42% 0 0 0);
-    mix-blend-mode: screen;
-    filter: hue-rotate(12deg);
+    color: #2af2ff;                 /* cyan channel */
+    opacity: 0.5;
+    clip-path: none;
+    animation: vhsCyan 4.2s ease-in-out infinite;
 }
 
-@keyframes glitchShudder {
-    0%, 100%   { transform: translate(0, 0); }
-    78%, 92%   { transform: translate(0, 0); }
-    80%        { transform: translate(-0.6px, 0.4px); }
-    82%        { transform: translate(0.5px, -0.3px); }
-    84%        { transform: translate(0, 0); }
-    88%        { transform: translate(0.4px, 0.3px); }
-    90%        { transform: translate(-0.3px, -0.2px); }
+@keyframes vhsRed {
+    0%, 100% { transform: translate(-0.8px, 0); }
+    18%      { transform: translate(-1.1px, 0.3px); }
+    35%      { transform: translate(-0.6px, -0.2px); }
+    /* brief VHS tear */
+    72%      { transform: translate(-0.8px, 0); clip-path: inset(0 0 0 0); }
+    74%      { transform: translate(-3px, 0.5px); clip-path: inset(42% 0 48% 0); }
+    76%      { transform: translate(2px, -0.4px); clip-path: inset(18% 0 68% 0); }
+    78%      { transform: translate(-0.8px, 0); clip-path: inset(0 0 0 0); }
+    92%      { transform: translate(-2px, 0.3px); clip-path: inset(64% 0 22% 0); }
+    94%      { transform: translate(-0.8px, 0); clip-path: inset(0 0 0 0); }
 }
 
-@keyframes glitch1 {
-    0%, 100%   { opacity: 0; transform: translate(0); }
-    79%        { opacity: 0.55; transform: translate(-2px, 0.5px); }
-    81%        { opacity: 0; transform: translate(2px, -0.5px); }
-    83%        { opacity: 0.4; transform: translate(1px, 1px); }
-    85%        { opacity: 0; transform: translate(0); }
-    89%        { opacity: 0.45; transform: translate(-1.5px, 0.5px); }
-    91%        { opacity: 0; transform: translate(0); }
-}
-
-@keyframes glitch2 {
-    0%, 100%   { opacity: 0; transform: translate(0); }
-    80%        { opacity: 0.5; transform: translate(2px, -0.5px); }
-    82%        { opacity: 0; transform: translate(-1px, 1px); }
-    84%        { opacity: 0.35; transform: translate(-2px, -0.5px); }
-    86%        { opacity: 0; transform: translate(0); }
-    90%        { opacity: 0.4; transform: translate(1.5px, -0.5px); }
-    92%        { opacity: 0; transform: translate(0); }
+@keyframes vhsCyan {
+    0%, 100% { transform: translate(0.8px, 0); }
+    22%      { transform: translate(1.2px, -0.3px); }
+    45%      { transform: translate(0.5px, 0.2px); }
+    72%      { transform: translate(0.8px, 0); clip-path: inset(0 0 0 0); }
+    74%      { transform: translate(3px, -0.5px); clip-path: inset(42% 0 48% 0); }
+    76%      { transform: translate(-2px, 0.4px); clip-path: inset(18% 0 68% 0); }
+    78%      { transform: translate(0.8px, 0); clip-path: inset(0 0 0 0); }
+    92%      { transform: translate(2px, -0.3px); clip-path: inset(64% 0 22% 0); }
+    94%      { transform: translate(0.8px, 0); clip-path: inset(0 0 0 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .glitch-text,
     .glitch-text::before,
-    .glitch-text::after { animation: none; }
-    .glitch-text::before,
-    .glitch-text::after { opacity: 0; }
+    .glitch-text::after { animation: none; opacity: 0; }
 }
 
 .hero-subtitle {

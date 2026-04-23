@@ -86,7 +86,10 @@
           <p class="nl-sub" id="nlSub">One email a week: free tools we build, practical AI and automation strategy, and business news worth your time. Unsubscribe any time.</p>
           <form class="nl-form" id="nlForm" novalidate>
             <div class="nl-field">
-              <input type="text" name="firstName" id="nlFirstName" placeholder="First name (optional)" autocomplete="given-name" maxlength="80">
+              <input type="text" name="firstName" id="nlFirstName" placeholder="First name" autocomplete="given-name" maxlength="80" required>
+            </div>
+            <div class="nl-field">
+              <input type="text" name="lastName" id="nlLastName" placeholder="Last name (optional)" autocomplete="family-name" maxlength="80">
             </div>
             <div class="nl-field">
               <input type="email" name="email" id="nlEmail" placeholder="you@yourbusiness.com" autocomplete="email" required inputmode="email">
@@ -154,11 +157,20 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const firstNameInput = modal.querySelector('#nlFirstName');
+      const lastNameInput = modal.querySelector('#nlLastName');
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
       const email = emailInput.value.trim();
-      const firstName = modal.querySelector('#nlFirstName').value.trim();
       feedback.textContent = '';
       feedback.className = 'nl-feedback';
 
+      if (!firstName) {
+        feedback.textContent = 'Please enter your first name.';
+        feedback.classList.add('is-error');
+        firstNameInput.focus();
+        return;
+      }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         feedback.textContent = 'Please enter a valid email address.';
         feedback.classList.add('is-error');
@@ -173,7 +185,7 @@
         const res = await fetch('/api/newsletter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName })
+          body: JSON.stringify({ email, firstName, lastName })
         });
         if (!res.ok) throw new Error('Subscribe failed');
         try { localStorage.setItem(SUBSCRIBED_KEY, '1'); } catch (_) {}
